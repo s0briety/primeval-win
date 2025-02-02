@@ -7,4 +7,6 @@
 
 #include "ragebot/prediction.h"
 
+#include "ragebot/aimbot.h"
+
 #include "misc/movement.h"

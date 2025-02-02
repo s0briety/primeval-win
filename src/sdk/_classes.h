@@ -185,6 +185,7 @@ public:
 	NETVAR(get_owner(), c_base_handle, "CBaseViewModel->m_hOwner")
 	NETVAR(get_weapon(), c_base_handle, "CBaseViewModel->m_hWeapon")
 	NETPROP(get_sequence_prop(), "CBaseViewModel->m_nSequence")
+
 };
 
 class c_base_weapon_world_model : public c_base_entity {

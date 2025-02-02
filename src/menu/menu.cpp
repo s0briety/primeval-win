@@ -31,7 +31,6 @@ void RenderAimbotTab()
 			ImGui::Indent();
 			render::DrawSwitch("Silent Aim", &globals::config::silentAimEnabled);
 			render::DrawSwitch("Resolver", &globals::config::aimbotResolver);
-			render::DrawSwitch("Autowall", &globals::config::aimbotAutowall);
 			render::DrawSwitch("Autofire", &globals::config::aimbotAutoShoot);
 			render::DrawSwitch("Autoscope", &globals::config::aimbotAutoscope);
 			render::DrawSwitch("Autostop", &globals::config::aimbotAutostop);
@@ -185,11 +184,11 @@ void RenderVisualsTab()
 		if (globals::config::chamsEnabled)
 		{
 			render::DrawSwitch("Enemy Chams", &globals::config::chamsEnemies);
+			ImGui::ColorEdit4("Enemy Chams Color", (float*)&globals::config::enemyChamsColor);
 			render::DrawSwitch("Teammate Chams", &globals::config::chamsTeammates);
+			ImGui::ColorEdit4("Teammate Chams Color", (float*)&globals::config::teammateChamsColor);
 			render::DrawSwitch("Self Chams", &globals::config::chamsSelf);
-			ImGui::ColorPicker4("Enemy Chams Color", (float*)&globals::config::enemyChamsColor);
-			ImGui::ColorPicker4("Teammate Chams Color", (float*)&globals::config::teammateChamsColor);
-			ImGui::ColorPicker4("Self Chams Color", (float*)&globals::config::selfChamsColor);
+			ImGui::ColorEdit4("Self Chams Color", (float*)&globals::config::selfChamsColor);
 		}
 		ImGui::EndGroup();
 
@@ -205,7 +204,7 @@ void RenderVisualsTab()
 			render::DrawSwitch("Show Weapon", &globals::config::espWeapon);
 			render::DrawSwitch("Show Skeleton", &globals::config::espSkeleton);
 			render::DrawSwitch("Show Box", &globals::config::espBox);
-			ImGui::ColorPicker4("ESP Color", (float*)&globals::config::espColor);
+			ImGui::ColorEdit4("ESP Color", (float*)&globals::config::espColor);
 		}
 		ImGui::EndGroup();
 
@@ -214,17 +213,17 @@ void RenderVisualsTab()
 		if (globals::config::glowEnabled)
 		{
 			render::DrawSwitch("Enemy Glow", &globals::config::glowEnemies);
-			ImGui::ColorPicker4("Enemy Glow Color", (float*)&globals::config::enemyglowColor);
+			ImGui::ColorEdit4("Enemy Glow Color", (float*)&globals::config::enemyglowColor);
 			render::DrawSwitch("Teammate Glow", &globals::config::glowTeammates);
-			ImGui::ColorPicker4("Teammate Glow Color", (float*)&globals::config::teammateglowColor);
+			ImGui::ColorEdit4("Teammate Glow Color", (float*)&globals::config::teammateglowColor);
 			render::DrawSwitch("Self Glow", &globals::config::glowSelf);
-			ImGui::ColorPicker4("Self Glow Color", (float*)&globals::config::selfglowColor);
+			ImGui::ColorEdit4("Self Glow Color", (float*)&globals::config::selfglowColor);
 		}
 		ImGui::EndGroup();
 
 		ImGui::BeginGroup();
 		ImGui::SliderFloat("World FOV", &globals::config::worldFov, 60.f, 130.f, "%.0f", ImGuiSliderFlags_AlwaysClamp);
-		ImGui::ColorPicker4("Sky Color", (float*)&globals::config::skyColor);
+		ImGui::ColorEdit4("Sky Color", (float*)&globals::config::skyColor);
 		ImGui::EndGroup();
 	}
 	ImGui::PopFont();

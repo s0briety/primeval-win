@@ -54,6 +54,17 @@ void __stdcall hooks::client_dll::create_move::fn(int sequence_number, float inp
 
 	/* */
 
+	if (globals::config::silentAimEnabled)
+	{
+		interfaces::m_engine->set_view_angles(cmd->m_view_angles);
+		aimbot->run(cmd);
+	}
+	else
+	{
+		aimbot->run(cmd);
+		interfaces::m_engine->set_view_angles(cmd->m_view_angles);
+	}
+
 	engine_prediction->restore();
 
 	cmd->m_view_angles.sanitize();

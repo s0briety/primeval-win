@@ -27,6 +27,7 @@ namespace hooks {
 		m_client_mode = std::make_unique<memory::hook_t>(interfaces::m_client_mode);
 
 		m_client_mode->hook(client_mode::override_view::index, client_mode::override_view::fn);
+		m_client_mode->hook(client_mode::do_post_screen_space_effects::index, client_mode::do_post_screen_space_effects::fn);
 
 		// // // // // // // // // // // // // // // // // // // // // // //
 

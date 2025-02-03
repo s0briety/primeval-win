@@ -123,10 +123,10 @@
     <ClCompile Include="src\features\visuals\third_person.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\features\visuals\glow.cpp">
+    <ClCompile Include="src\features\ragebot\aimbot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\features\ragebot\aimbot.cpp">
+    <ClCompile Include="src\features\visuals\world.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -138,9 +138,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\features\ragebot\prediction.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\features\visuals\chams.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\features\features.h">
@@ -470,10 +467,13 @@
     <ClInclude Include="src\features\visuals\third_person.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\features\visuals\glow.h">
+    <ClInclude Include="src\features\ragebot\aimbot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\features\ragebot\aimbot.h">
+    <ClInclude Include="src\features\visuals\chams.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\features\visuals\world.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

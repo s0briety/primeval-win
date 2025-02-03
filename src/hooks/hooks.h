@@ -50,6 +50,12 @@ namespace hooks {
 			using T = void(__stdcall*)(view_setup_t*);
 			void __stdcall fn(view_setup_t* view);
 		}
+
+		namespace do_post_screen_space_effects {
+			constexpr auto index = 44u;
+			using T = bool(__thiscall*)(void*, view_setup_t*);
+			bool __fastcall fn(void* ecx, void* edx, view_setup_t* view);
+		}
 	}
 
 	namespace model_render {

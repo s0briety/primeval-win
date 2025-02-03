@@ -183,12 +183,69 @@ void RenderVisualsTab()
 		render::DrawSwitch("Chams", &globals::config::chamsEnabled);
 		if (globals::config::chamsEnabled)
 		{
-			render::DrawSwitch("Enemy Chams", &globals::config::chamsEnemies);
-			ImGui::ColorEdit4("Enemy Chams Color", (float*)&globals::config::enemyChamsColor);
-			render::DrawSwitch("Teammate Chams", &globals::config::chamsTeammates);
-			ImGui::ColorEdit4("Teammate Chams Color", (float*)&globals::config::teammateChamsColor);
-			render::DrawSwitch("Self Chams", &globals::config::chamsSelf);
-			ImGui::ColorEdit4("Self Chams Color", (float*)&globals::config::selfChamsColor);
+
+			render::DrawSwitch("Enemy Chams", &globals::config::chamsTable[0].enabled);
+
+			if (globals::config::chamsTable[0].enabled)
+			{
+				ImGui::ColorEdit4("Primary Enemy Color", (float*)&globals::config::chamsTable[0].primary);
+
+				if (globals::config::chamsTable[0].type == 9)
+				{
+					ImGui::ColorEdit4("Secondary Enemy Color", (float*)&globals::config::chamsTable[0].secondary);
+				}
+
+				ImGui::PushStyleColor(ImGuiCol_FrameBg, globals::config::backgroundColor);
+				ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, globals::config::backgroundColor);
+				ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(globals::config::backgroundColor.x + 0.05f, globals::config::backgroundColor.y + 0.05f, globals::config::backgroundColor.z + 0.05f, globals::config::backgroundColor.w));
+				ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(globals::config::backgroundColor.x - 0.05f, globals::config::backgroundColor.y - 0.05f, globals::config::backgroundColor.z - 0.05f, globals::config::backgroundColor.w));
+				ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(globals::config::backgroundColor.x + 0.05f, globals::config::backgroundColor.y + 0.05f, globals::config::backgroundColor.z + 0.05f, globals::config::backgroundColor.w));
+				ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(globals::config::backgroundColor.x - 0.05f, globals::config::backgroundColor.y - 0.05f, globals::config::backgroundColor.z - 0.05f, globals::config::backgroundColor.w));
+				ImGui::Combo("##EnemyMaterial", &globals::config::chamsTable[0].type, "Texture\0Flat\0Wireframe\0Platinum\0Glass\0Crystal\0Gold\0Chrome\0Plastic\0Glow\0\0");
+				ImGui::PopStyleColor(6);
+			}
+
+			render::DrawSwitch("Teammate Chams", &globals::config::chamsTable[1].enabled);
+
+			if (globals::config::chamsTable[1].enabled)
+			{
+				ImGui::ColorEdit4("Primary Teammate Color", (float*)&globals::config::chamsTable[1].primary);
+
+				if (globals::config::chamsTable[1].type == 9)
+				{
+					ImGui::ColorEdit4("Secondary Teammate Color", (float*)&globals::config::chamsTable[1].secondary);
+				}
+
+				ImGui::PushStyleColor(ImGuiCol_FrameBg, globals::config::backgroundColor);
+				ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, globals::config::backgroundColor);
+				ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(globals::config::backgroundColor.x + 0.05f, globals::config::backgroundColor.y + 0.05f, globals::config::backgroundColor.z + 0.05f, globals::config::backgroundColor.w));
+				ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(globals::config::backgroundColor.x - 0.05f, globals::config::backgroundColor.y - 0.05f, globals::config::backgroundColor.z - 0.05f, globals::config::backgroundColor.w));
+				ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(globals::config::backgroundColor.x + 0.05f, globals::config::backgroundColor.y + 0.05f, globals::config::backgroundColor.z + 0.05f, globals::config::backgroundColor.w));
+				ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(globals::config::backgroundColor.x - 0.05f, globals::config::backgroundColor.y - 0.05f, globals::config::backgroundColor.z - 0.05f, globals::config::backgroundColor.w));
+				ImGui::Combo("##FriendlyMaterial", &globals::config::chamsTable[1].type, "Texture\0Flat\0Wireframe\0Platinum\0Glass\0Crystal\0Gold\0Chrome\0Plastic\0Glow\0\0");
+				ImGui::PopStyleColor(6);
+			}
+
+			render::DrawSwitch("Self Chams", &globals::config::chamsTable[2].enabled);
+
+			if (globals::config::chamsTable[2].enabled)
+			{
+				ImGui::ColorEdit4("Primary Self Color", (float*)&globals::config::chamsTable[2].primary);
+
+				if (globals::config::chamsTable[2].type == 9)
+				{
+					ImGui::ColorEdit4("Secondary Self Color", (float*)&globals::config::chamsTable[2].secondary);
+				}
+
+				ImGui::PushStyleColor(ImGuiCol_FrameBg, globals::config::backgroundColor);
+				ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, globals::config::backgroundColor);
+				ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(globals::config::backgroundColor.x + 0.05f, globals::config::backgroundColor.y + 0.05f, globals::config::backgroundColor.z + 0.05f, globals::config::backgroundColor.w));
+				ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(globals::config::backgroundColor.x - 0.05f, globals::config::backgroundColor.y - 0.05f, globals::config::backgroundColor.z - 0.05f, globals::config::backgroundColor.w));
+				ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(globals::config::backgroundColor.x + 0.05f, globals::config::backgroundColor.y + 0.05f, globals::config::backgroundColor.z + 0.05f, globals::config::backgroundColor.w));
+				ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(globals::config::backgroundColor.x - 0.05f, globals::config::backgroundColor.y - 0.05f, globals::config::backgroundColor.z - 0.05f, globals::config::backgroundColor.w));
+				ImGui::Combo("##SelfMaterial", &globals::config::chamsTable[2].type, "Texture\0Flat\0Wireframe\0Platinum\0Glass\0Crystal\0Gold\0Chrome\0Plastic\0Glow\0\0");
+				ImGui::PopStyleColor(6);
+			}
 		}
 		ImGui::EndGroup();
 
@@ -212,17 +269,27 @@ void RenderVisualsTab()
 		render::DrawSwitch("Glow", &globals::config::glowEnabled);
 		if (globals::config::glowEnabled)
 		{
-			render::DrawSwitch("Enemy Glow", &globals::config::glowEnemies);
-			ImGui::ColorEdit4("Enemy Glow Color", (float*)&globals::config::enemyglowColor);
-			render::DrawSwitch("Teammate Glow", &globals::config::glowTeammates);
-			ImGui::ColorEdit4("Teammate Glow Color", (float*)&globals::config::teammateglowColor);
-			render::DrawSwitch("Self Glow", &globals::config::glowSelf);
-			ImGui::ColorEdit4("Self Glow Color", (float*)&globals::config::selfglowColor);
+			render::DrawSwitch("Enemy Glow", &globals::config::glowTable[0].enabled);
+
+			if (globals::config::glowTable[0].enabled)
+			ImGui::ColorEdit4("Enemy Glow Color", (float*)&globals::config::glowTable[0].primary);
+
+			render::DrawSwitch("Teammate Glow", &globals::config::glowTable[1].enabled);
+
+			if (globals::config::glowTable[1].enabled)
+				ImGui::ColorEdit4("Teammate Glow Color", (float*)&globals::config::glowTable[1].primary);
+
+			render::DrawSwitch("Self Glow", &globals::config::glowTable[2].enabled);
+
+			if (globals::config::glowTable[2].enabled)
+				ImGui::ColorEdit4("Self Glow Color", (float*)&globals::config::glowTable[2].primary);
+
 		}
 		ImGui::EndGroup();
 
 		ImGui::BeginGroup();
 		ImGui::SliderFloat("World FOV", &globals::config::worldFov, 60.f, 130.f, "%.0f", ImGuiSliderFlags_AlwaysClamp);
+		render::DrawSwitch("Night mode", &globals::config::nightMode);
 		ImGui::ColorEdit4("Sky Color", (float*)&globals::config::skyColor);
 		ImGui::EndGroup();
 	}

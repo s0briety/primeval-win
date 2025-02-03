@@ -104,14 +104,15 @@ namespace globals {
         int antiAimPitchMode = 0; // 0 - Static, 1 - Down, 2 - Up, 3 - Random, 4 - Alternate, 5 - Fake Down, 6 - Fake Up
 
         // Visuals
+
+        visualStruct chamsTable[3] = { // 0 = Enemy, 1 = Friendly, 2 = Self
+            {false, 0, ImVec4(1.f, 0.f, 0.f, 1.f), ImVec4(1.f, 1.f, 1.f, 1.f)},
+            {false, 0, ImVec4(0.f, 1.f, 0.f, 1.f), ImVec4(1.f, 1.f, 1.f, 1.f)},
+            {false, 0, ImVec4(0.f, 0.f, 1.f, 1.f), ImVec4(1.f, 1.f, 1.f, 1.f)}
+        };
+
         bool visualsEnabled = false;
         bool chamsEnabled = false;
-        bool chamsEnemies = false;
-        bool chamsTeammates = false;
-        bool chamsSelf = false;
-        ImColor enemyChamsColor = ImColor(255, 0, 0); // Red color by default
-        ImColor teammateChamsColor = ImColor(0, 0, 255); // Blue color by default
-        ImColor selfChamsColor = ImColor(0, 255, 0); // Green color by default
         bool espEnabled = false;
         bool espEnemies = false;
         bool espTeammates = false;
@@ -122,14 +123,16 @@ namespace globals {
         bool espSkeleton = false;
         bool espBox = false;
         ImColor espColor = ImColor(255, 255, 255); // White color by default
+
+        visualStruct glowTable[3] = { // 0 = Enemy, 1 = Friendly, 2 = Self
+            {false, 0, ImVec4(1.f, 0.f, 0.f, 1.f), ImVec4(1.f, 1.f, 1.f, 1.f)},
+            {false, 0, ImVec4(0.f, 1.f, 0.f, 1.f), ImVec4(1.f, 1.f, 1.f, 1.f)},
+            {false, 0, ImVec4(0.f, 0.f, 1.f, 1.f), ImVec4(1.f, 1.f, 1.f, 1.f)}
+        };
+
         bool glowEnabled = false;
-        bool glowEnemies = false;
-        bool glowTeammates = false;
-        bool glowSelf = false;
-        ImColor enemyglowColor = ImColor(255, 0, 0); // Red color by default
-        ImColor teammateglowColor = ImColor(0, 0, 255); // Blue color by default
-        ImColor selfglowColor = ImColor(0, 255, 0); // Green color by default
         float worldFov = 90.0f;
+        bool nightMode = false;
         ImColor skyColor = ImColor(0, 0, 0);
 
         // Misc

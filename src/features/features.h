@@ -1,9 +1,9 @@
 #pragma once
 #include "visuals/chams.h"
 
-#include "visuals/glow.h"
-
 #include "visuals/third_person.h"
+
+#include "visuals/world.h"
 
 #include "ragebot/prediction.h"
 

@@ -6,6 +6,11 @@ void __stdcall hooks::client_dll::frame_stage_notify::fn(e_client_frame_stage st
 	if (stage == FRAME_RENDER_START
 		&& interfaces::m_engine->is_in_game() && globals::m_local->is_alive()) {
 		interfaces::m_engine->get_view_angles(globals::angles::m_view);
+
+		if (globals::config::nightMode)
+		{
+			world->ApplyNightMode();
+		}
 	}
 
 	original(stage);
@@ -44,6 +49,8 @@ void __stdcall hooks::client_dll::create_move::fn(int sequence_number, float inp
 
 	globals::m_cur_cmd = cmd;
 
+	thirdperson->EnterThirdPerson();
+
 	movement->set_view_angles(cmd->m_view_angles);
 
 	engine_prediction->update();
@@ -72,8 +79,6 @@ void __stdcall hooks::client_dll::create_move::fn(int sequence_number, float inp
 	globals::angles::m_anim = cmd->m_view_angles;
 
 	movement->on_create_move(true);
-
-	thirdperson->EnterThirdPerson();
 
 	packet = globals::m_packet;
 

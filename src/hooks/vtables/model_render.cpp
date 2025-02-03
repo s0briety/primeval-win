@@ -5,6 +5,10 @@ void __fastcall hooks::model_render::draw_model_execute::fn(i_model_render* ecx,
 
 	if (info.m_flags.has(STUDIO_SHADOW_DEPTH_TEXTURE))
 		return original(ecx, context, state, info, bones);
+
+	if (interfaces::m_model_render->is_forced_material_override()) {
+		return original(ecx, context, state, info, bones);
+	}
 	
 	if (chams->on_draw_model(ecx, context, state, info, bones)) {
 		original(ecx, context, state, info, bones);

@@ -14,6 +14,13 @@ namespace globals {
         extern auto ConsoleLog(std::string_view msg, col_t color) -> void;
     }
 
+    struct visualStruct {
+        bool enabled;
+        int type;
+        ImVec4 primary;
+        ImVec4 secondary;
+    };
+
 	namespace config
 	{
 
@@ -69,14 +76,11 @@ namespace globals {
         extern int antiAimPitchMode; // 0 - Static, 1 - Down, 2 - Up, 3 - Random, 4 - Alternate, 5 - Fake Down, 6 - Fake Up
 
         // Visuals
+
+        extern visualStruct chamsTable[3];
+
         extern bool visualsEnabled;
         extern bool chamsEnabled;
-        extern bool chamsEnemies;
-        extern bool chamsTeammates;
-        extern bool chamsSelf;
-        extern ImColor enemyChamsColor; // Red color by default
-        extern ImColor teammateChamsColor; // Blue color by default
-        extern ImColor selfChamsColor; // Green color by default
         extern bool espEnabled;
         extern bool espEnemies;
         extern bool espTeammates;
@@ -87,14 +91,12 @@ namespace globals {
         extern bool espSkeleton;
         extern bool espBox;
         extern ImColor espColor; // White color by default
+
+        extern visualStruct glowTable[3];
+
         extern bool glowEnabled;
-        extern bool glowEnemies;
-        extern bool glowTeammates;
-        extern bool glowSelf;
-        extern ImColor enemyglowColor; // Red color by default
-        extern ImColor teammateglowColor; // Blue color by default
-        extern ImColor selfglowColor; // Green color by default
         extern float worldFov;
+        extern bool nightMode;
         extern ImColor skyColor;
 
         // Misc

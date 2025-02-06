@@ -97,6 +97,7 @@ namespace globals {
         extern bool glowEnabled;
         extern float worldFov;
         extern bool nightMode;
+        extern float nightScale;
         extern ImColor skyColor;
 
         // Misc

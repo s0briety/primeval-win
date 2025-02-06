@@ -16,11 +16,10 @@ inline std::vector<KeyBind*> keyBinds = {
 
 inline bool checkKeybinds() {
 	for (auto bind : keyBinds) {
-		if (bind->Mode != ALWAYS_ON && (!bind || bind->Key == 0))
+		if (bind->Mode != ALWAYS_ON && (!bind || bind->Key == 0) || bind->Mode == ALWAYS_OFF)
 			continue;
 
 		input::get_key(*bind);
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
 
 	return true;
@@ -61,6 +60,7 @@ void init(const HMODULE module) {
 
 	while (!GetAsyncKeyState(VK_DELETE)) {
 		checkKeybinds();
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
 
 	UNLOAD:

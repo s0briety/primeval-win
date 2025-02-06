@@ -180,6 +180,22 @@ void RenderVisualsTab()
 	if (globals::config::visualsEnabled)
 	{
 		ImGui::BeginGroup();
+		render::DrawSwitch("ESP", &globals::config::espEnabled);
+		if (globals::config::espEnabled)
+		{
+			render::DrawSwitch("Enemy ESP", &globals::config::espEnemies);
+			render::DrawSwitch("Teammate ESP", &globals::config::espTeammates);
+			render::DrawSwitch("Self ESP", &globals::config::espSelf);
+			render::drawSlider("ESP Distance", (float*)&globals::config::espDistance, 1, 1000, "%d", ImGuiSliderFlags_AlwaysClamp);
+			render::DrawSwitch("Health Bar", &globals::config::espHealth);
+			render::DrawSwitch("Weapon", &globals::config::espWeapon);
+			render::DrawSwitch("Skeleton", &globals::config::espSkeleton);
+			render::DrawSwitch("Boxes", &globals::config::espBox);
+			ImGui::ColorEdit4("ESP Color", (float*)&globals::config::espColor);
+		}
+		ImGui::EndGroup();
+
+		ImGui::BeginGroup();
 		render::DrawSwitch("Chams", &globals::config::chamsEnabled);
 		if (globals::config::chamsEnabled)
 		{
@@ -250,39 +266,53 @@ void RenderVisualsTab()
 		ImGui::EndGroup();
 
 		ImGui::BeginGroup();
-		render::DrawSwitch("ESP", &globals::config::espEnabled);
-		if (globals::config::espEnabled)
-		{
-			render::DrawSwitch("Enemy ESP", &globals::config::espEnemies);
-			render::DrawSwitch("Teammate ESP", &globals::config::espTeammates);
-			render::DrawSwitch("Self ESP", &globals::config::espSelf);
-			ImGui::SliderInt("ESP Distance", &globals::config::espDistance, 1, 1000, "%d", ImGuiSliderFlags_AlwaysClamp);
-			render::DrawSwitch("Show Health", &globals::config::espHealth);
-			render::DrawSwitch("Show Weapon", &globals::config::espWeapon);
-			render::DrawSwitch("Show Skeleton", &globals::config::espSkeleton);
-			render::DrawSwitch("Show Box", &globals::config::espBox);
-			ImGui::ColorEdit4("ESP Color", (float*)&globals::config::espColor);
-		}
-		ImGui::EndGroup();
-
-		ImGui::BeginGroup();
 		render::DrawSwitch("Glow", &globals::config::glowEnabled);
 		if (globals::config::glowEnabled)
 		{
 			render::DrawSwitch("Enemy Glow", &globals::config::glowTable[0].enabled);
 
 			if (globals::config::glowTable[0].enabled)
-			ImGui::ColorEdit4("Enemy Glow Color", (float*)&globals::config::glowTable[0].primary);
+			{
+				ImGui::ColorEdit4("Enemy Glow Color", (float*)&globals::config::glowTable[0].primary);
+				ImGui::PushStyleColor(ImGuiCol_FrameBg, globals::config::backgroundColor);
+				ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, globals::config::backgroundColor);
+				ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(globals::config::backgroundColor.x + 0.05f, globals::config::backgroundColor.y + 0.05f, globals::config::backgroundColor.z + 0.05f, globals::config::backgroundColor.w));
+				ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(globals::config::backgroundColor.x - 0.05f, globals::config::backgroundColor.y - 0.05f, globals::config::backgroundColor.z - 0.05f, globals::config::backgroundColor.w));
+				ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(globals::config::backgroundColor.x + 0.05f, globals::config::backgroundColor.y + 0.05f, globals::config::backgroundColor.z + 0.05f, globals::config::backgroundColor.w));
+				ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(globals::config::backgroundColor.x - 0.05f, globals::config::backgroundColor.y - 0.05f, globals::config::backgroundColor.z - 0.05f, globals::config::backgroundColor.w));
+				ImGui::Combo("##EnemyGlow", &globals::config::glowTable[0].type, "Static\0Inner Pulse\0Thin\0Pulse\0\0");
+				ImGui::PopStyleColor(6);
+			}
 
 			render::DrawSwitch("Teammate Glow", &globals::config::glowTable[1].enabled);
 
 			if (globals::config::glowTable[1].enabled)
+			{
 				ImGui::ColorEdit4("Teammate Glow Color", (float*)&globals::config::glowTable[1].primary);
+				ImGui::PushStyleColor(ImGuiCol_FrameBg, globals::config::backgroundColor);
+				ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, globals::config::backgroundColor);
+				ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(globals::config::backgroundColor.x + 0.05f, globals::config::backgroundColor.y + 0.05f, globals::config::backgroundColor.z + 0.05f, globals::config::backgroundColor.w));
+				ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(globals::config::backgroundColor.x - 0.05f, globals::config::backgroundColor.y - 0.05f, globals::config::backgroundColor.z - 0.05f, globals::config::backgroundColor.w));
+				ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(globals::config::backgroundColor.x + 0.05f, globals::config::backgroundColor.y + 0.05f, globals::config::backgroundColor.z + 0.05f, globals::config::backgroundColor.w));
+				ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(globals::config::backgroundColor.x - 0.05f, globals::config::backgroundColor.y - 0.05f, globals::config::backgroundColor.z - 0.05f, globals::config::backgroundColor.w));
+				ImGui::Combo("##FriendlyGlow", &globals::config::glowTable[1].type, "Static\0Inner Pulse\0Thin\0Pulse\0\0");
+				ImGui::PopStyleColor(6);
+			}
 
 			render::DrawSwitch("Self Glow", &globals::config::glowTable[2].enabled);
 
 			if (globals::config::glowTable[2].enabled)
+			{
 				ImGui::ColorEdit4("Self Glow Color", (float*)&globals::config::glowTable[2].primary);
+				ImGui::PushStyleColor(ImGuiCol_FrameBg, globals::config::backgroundColor);
+				ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, globals::config::backgroundColor);
+				ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(globals::config::backgroundColor.x + 0.05f, globals::config::backgroundColor.y + 0.05f, globals::config::backgroundColor.z + 0.05f, globals::config::backgroundColor.w));
+				ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(globals::config::backgroundColor.x - 0.05f, globals::config::backgroundColor.y - 0.05f, globals::config::backgroundColor.z - 0.05f, globals::config::backgroundColor.w));
+				ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(globals::config::backgroundColor.x + 0.05f, globals::config::backgroundColor.y + 0.05f, globals::config::backgroundColor.z + 0.05f, globals::config::backgroundColor.w));
+				ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(globals::config::backgroundColor.x - 0.05f, globals::config::backgroundColor.y - 0.05f, globals::config::backgroundColor.z - 0.05f, globals::config::backgroundColor.w));
+				ImGui::Combo("##SelfGlow", &globals::config::glowTable[2].type, "Static\0Inner Pulse\0Thin\0Pulse\0\0");
+				ImGui::PopStyleColor(6);
+			}
 
 		}
 		ImGui::EndGroup();
@@ -290,6 +320,10 @@ void RenderVisualsTab()
 		ImGui::BeginGroup();
 		ImGui::SliderFloat("World FOV", &globals::config::worldFov, 60.f, 130.f, "%.0f", ImGuiSliderFlags_AlwaysClamp);
 		render::DrawSwitch("Night mode", &globals::config::nightMode);
+
+		if (globals::config::nightMode)
+			render::drawSlider("Brightness Scale", &globals::config::nightScale, 0.01f, 1.0f, true, 2);
+
 		ImGui::ColorEdit4("Sky Color", (float*)&globals::config::skyColor);
 		ImGui::EndGroup();
 	}

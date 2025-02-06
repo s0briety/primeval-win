@@ -45,7 +45,7 @@ bool __fastcall hooks::client_mode::do_post_screen_space_effects::fn(void* ecx, 
             }
 
             if (index != -1) {
-                glow_object.set(color, 0); // globals::config::glowTable[index].type);
+                glow_object.set(color, globals::config::glowTable[index].type);
             }
         }
     }

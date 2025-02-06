@@ -129,6 +129,12 @@
     <ClCompile Include="src\features\visuals\world.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\events\callbacks\cs_game_disconnected.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\features\visuals\esp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\events\events.h">
@@ -474,6 +480,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\features\visuals\world.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\features\visuals\esp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

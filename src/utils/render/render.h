@@ -18,7 +18,10 @@ namespace render {
 
 	bool DrawSwitch(const char* label, bool* v, bool bullet = true);
 
-	bool drawSlider(const char* label, float* v, float v_min, float v_max, bool bullet = false);
+	bool drawSlider(const char* label, float* v, float v_min, float v_max, bool bullet = false, int precision = 0);
+
+	void DrawColorPicker(const char* label, ImColor* color);
+	void DrawColorPicker(const char* label, ImVec4* color);
 
 	extern std::mutex m_mutex;
 

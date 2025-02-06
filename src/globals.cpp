@@ -9,19 +9,12 @@ namespace globals {
     namespace game {
         auto ConsoleLog(std::string_view msg, col_t color) -> void
         {
-            static constexpr int LS_HIGHEST_SEVERITY = 4;
-
-            using find_channel_fn_t = int(__cdecl*)(const char* name);
-            static const auto s_channel_id = ((find_channel_fn_t)GetProcAddress(GetModuleHandleA("tier0.dll"), "LoggingSystem_FindChannel"))("Console");
-
-            using log_direct_fn_t = int(__cdecl*)(int id, int severity, col_t color, const char* msg);
-            static const auto s_log_direct = (log_direct_fn_t)GetProcAddress(GetModuleHandleA("tier0.dll"), "LoggingSystem_LogDirect");
 
             std::string output = "[PRIMEVAL] | ";
             output.append(msg);
             output.append("\n");
 
-            s_log_direct(s_channel_id, LS_HIGHEST_SEVERITY, color, output.data());
+            interfaces::m_cvar_system->console_print(color, output.data());
         }
     }
 
@@ -133,6 +126,7 @@ namespace globals {
         bool glowEnabled = false;
         float worldFov = 90.0f;
         bool nightMode = false;
+        float nightScale = 0.01f;
         ImColor skyColor = ImColor(0, 0, 0);
 
         // Misc

@@ -1,6 +1,8 @@
 #pragma once
 #include "visuals/chams.h"
 
+#include "visuals/esp.h"
+
 #include "visuals/third_person.h"
 
 #include "visuals/world.h"

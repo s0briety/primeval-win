@@ -1,7 +1,34 @@
 #pragma once
 
+enum EFontDrawType : std::int32_t
+{
+	FONT_DRAW_DEFAULT = 0,
+	FONT_DRAW_NONADDITIVE,
+	FONT_DRAW_ADDITIVE
+};
+
+enum EFontFlag
+{
+	FONT_FLAG_NONE,
+	FONT_FLAG_ITALIC = 0x001,
+	FONT_FLAG_UNDERLINE = 0x002,
+	FONT_FLAG_STRIKEOUT = 0x004,
+	FONT_FLAG_SYMBOL = 0x008,
+	FONT_FLAG_ANTIALIAS = 0x010,
+	FONT_FLAG_GAUSSIANBLUR = 0x020,
+	FONT_FLAG_ROTARY = 0x040,
+	FONT_FLAG_DROPSHADOW = 0x080,
+	FONT_FLAG_ADDITIVE = 0x100,
+	FONT_FLAG_OUTLINE = 0x200,
+	FONT_FLAG_CUSTOM = 0x400,
+	FONT_FLAG_BITMAP = 0x800,
+};
+
 class i_surface {
 public:
-	VFUNC(unlock_cursor(), 66, void(__thiscall*)(void*))
-	VFUNC(lock_cursor(), 67, void(__thiscall*)(void*))
+    VFUNC(unlock_cursor(), 66, void(__thiscall*)(void*))
+    VFUNC(lock_cursor(), 67, void(__thiscall*)(void*))
+    VFUNC(draw_set_color(int r, int g, int b, int a), 15, void(__thiscall*)(void*, int, int, int, int), r, g, b, a)
+    VFUNC(draw_filled_rect(int x, int y, int xx, int yy), 16, void(__thiscall*)(void*, int, int, int, int), x, y, xx, yy)
+    VFUNC(draw_outlined_rect(int x, int y, int xx, int yy), 18, void(__thiscall*)(void*, int, int, int, int), x, y, xx, yy)
 };

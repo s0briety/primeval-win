@@ -3,6 +3,8 @@
 void __fastcall hooks::panel::paint_traverse::fn(void* ecx, void* edx, uint32_t id, bool force_repaint, bool allow_force) {
 	static const auto original = m_panel->get_original<T>(index);
 
+	world->CallNightMode();
+
 	original(ecx, id, force_repaint, allow_force);
 
 	{
@@ -17,5 +19,9 @@ void __fastcall hooks::panel::paint_traverse::fn(void* ecx, void* edx, uint32_t 
 
 		if (id != draw_panel_id)
 			return;
+
+		player_esp->CallEsp();
+
+		original(ecx, id, force_repaint, allow_force);
 	}
 }

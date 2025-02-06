@@ -7,10 +7,6 @@ void __stdcall hooks::client_dll::frame_stage_notify::fn(e_client_frame_stage st
 		&& interfaces::m_engine->is_in_game() && globals::m_local->is_alive()) {
 		interfaces::m_engine->get_view_angles(globals::angles::m_view);
 
-		if (globals::config::nightMode)
-		{
-			world->ApplyNightMode();
-		}
 	}
 
 	original(stage);

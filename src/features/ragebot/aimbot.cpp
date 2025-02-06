@@ -5,7 +5,7 @@
 float c_aimbot::CalculateDistance(const vec3_t& target, const vec3_t& me)
 {
     vec3_t delta = target - me;
-    return std::sqrt(delta.x * delta.x + delta.y * delta.y + delta.z * delta.z);
+    return delta.x * delta.x + delta.y * delta.y + delta.z * delta.z;
 }
 
 void c_aimbot::run(c_user_cmd* cmd)
@@ -130,7 +130,7 @@ void c_aimbot::run(c_user_cmd* cmd)
                     metric = CalculateDistance(transformedCenter, localEyePos);
                     break;
                 case 1:
-                    metric = static_cast<float>(player->get_health());
+                    metric = static_cast<float>(-player->get_health());
                     break;
                 case 2:
                     // metric = calculateHitchance(activeWeapon, localEyePos, transformedCenter, aimPunch);

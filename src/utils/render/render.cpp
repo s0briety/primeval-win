@@ -1,6 +1,11 @@
+
+#include <sstream>
 #include "../utils.h"
 #include "../../sdk/interfaces.h"
 #include "../../features/features.h"
+
+ImVec2 LastSwitchPos;
+float adjustment = 40.f;
 
 namespace render {
 	void init() {
@@ -48,6 +53,7 @@ namespace render {
 		ImGui::PushID(label);
 		ImGui::Dummy(ImVec2(0.f, 1.5f));
 		ImVec2 pos = ImGui::GetCursorScreenPos();
+		LastSwitchPos = pos;
 		float height = ImGui::GetFrameHeight() / 2;
 		float width = height * 1.f;
 
@@ -70,29 +76,33 @@ namespace render {
 		float available_width = ImGui::GetContentRegionAvail().x - 15.f;
 
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + (available_width - text_width));
-
+		LastSwitchPos = ImGui::GetCursorScreenPos();
 		ImGui::Text(label);
 
 		ImGui::PopID();
 
+		adjustment = 40.f;
+
 		return toggle;
 	}
 
-	bool drawSlider(const char* label, float* v, float v_min, float v_max, bool bullet)
+	bool drawSlider(const char* label, float* v, float v_min, float v_max, bool bullet, int precision)
 	{
 		ImGui::PushID(label);
 
 		ImGui::Text(label);
 
 		ImVec2 pos = ImGui::GetCursorScreenPos();
+
 		float width = ImGui::CalcItemWidth() + ImGui::CalcItemWidth() / 5;
 		float height = ImGui::GetFrameHeight() / 5;
 
-		if (bullet)
+		/* if (bullet)
 		{
 			ImGui::Bullet();
 			width = ImGui::CalcItemWidth() + ImGui::CalcItemWidth() / 8;
-		}
+			pos.x += ImGui::GetStyle().ItemSpacing.x;
+		} */
 
 		ImU32 color_bg = ImGui::GetColorU32(globals::config::backgroundColor);
 		ImVec4 color_start = globals::config::secondaryColor;
@@ -130,13 +140,27 @@ namespace render {
 		float handle_x = pos.x + fill_width;
 		draw_list->AddCircleFilled(ImVec2(handle_x - 2.0f, pos.y + height * 0.5f), height * 1.3f, ImGui::GetColorU32(globals::config::secondaryColor));
 
-		int intValue = static_cast<int>(*v);
-		std::string strValue = std::to_string(intValue);
+		int intValue;
+		std::ostringstream strValueStream;
+		std::string strValue;
+
+		if (precision <= 0)
+		{
+			intValue = static_cast<int>(*v);
+			strValue = std::to_string(intValue);
+		}
+		else
+		{
+			strValueStream.precision(2);
+			strValueStream << std::fixed << *v;
+			strValue = strValueStream.str();
+		}
 
 		float widthAddition = 17.0f;
 
-		if (bullet)
+		/* if (bullet)
 			widthAddition = 15.0f;
+		*/
 
 		ImVec2 textPos = ImVec2(pos.x + width + widthAddition, pos.y - 4.99);
 		draw_list->AddText(textPos, ImGui::GetColorU32(globals::config::secondaryColor), strValue.c_str());
@@ -239,6 +263,18 @@ namespace render {
 		}
 
 		ImGui::PopID();
+	}
+
+	void DrawColorPicker(const char* label, ImColor* color)
+	{
+		ImVec2 pos = ImVec2(LastSwitchPos.x - adjustment, LastSwitchPos.y);
+
+		ImGui::SetCursorScreenPos(pos);
+
+		ImGui::SetNextItemWidth(30.f);
+		ImGui::ColorEdit4(label, (float*)&color, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_NoLabel);
+
+		adjustment = adjustment + 40.f;
 	}
 }
 

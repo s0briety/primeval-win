@@ -21,6 +21,26 @@ namespace globals {
         ImVec4 secondary;
     };
 
+    struct ESPSettings {
+        bool enabled = false;
+        float distance = 1000.f;
+        bool box = false;
+        bool healthBar = false;
+        bool weapon = false;
+        bool skeleton = false;
+        ImColor boxPrimary = ImColor(255, 255, 255, 255);
+        ImColor boxSecondary = ImColor(0, 0, 0, 255); 
+        ImColor HealthPrimary = ImColor(0, 255, 0, 255); 
+        ImColor WeaponPrimary = ImColor(255, 255, 255, 255);
+        ImColor SkeletonPrimary = ImColor(255, 255, 255, 255); 
+    };
+
+    struct ESPConfig {
+        ESPSettings enemy;
+        ESPSettings teammate;
+        ESPSettings self;
+    };
+
 	namespace config
 	{
 
@@ -79,18 +99,11 @@ namespace globals {
 
         extern visualStruct chamsTable[3];
 
+        extern ESPConfig espConfig;
+
         extern bool visualsEnabled;
         extern bool chamsEnabled;
         extern bool espEnabled;
-        extern bool espEnemies;
-        extern bool espTeammates;
-        extern bool espSelf;
-        extern int espDistance;
-        extern bool espHealth;
-        extern bool espWeapon;
-        extern bool espSkeleton;
-        extern bool espBox;
-        extern ImColor espColor; // White color by default
 
         extern visualStruct glowTable[3];
 

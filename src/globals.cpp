@@ -104,18 +104,11 @@ namespace globals {
             {false, 0, ImVec4(0.f, 0.f, 1.f, 1.f), ImVec4(1.f, 1.f, 1.f, 1.f)}
         };
 
+        ESPConfig espConfig; 
+
         bool visualsEnabled = false;
         bool chamsEnabled = false;
         bool espEnabled = false;
-        bool espEnemies = false;
-        bool espTeammates = false;
-        bool espSelf = false;
-        int espDistance = 500;
-        bool espHealth = false;
-        bool espWeapon = false;
-        bool espSkeleton = false;
-        bool espBox = false;
-        ImColor espColor = ImColor(255, 255, 255); // White color by default
 
         visualStruct glowTable[3] = { // 0 = Enemy, 1 = Friendly, 2 = Self
             {false, 0, ImVec4(1.f, 0.f, 0.f, 1.f), ImVec4(1.f, 1.f, 1.f, 1.f)},

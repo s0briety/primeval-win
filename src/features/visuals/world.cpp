@@ -119,3 +119,13 @@ void c_world::UndoNightMode(bool callback) {
     Modulate(1.0f, 1.0f, 1.0f);
     nightModeSet = false;
 }
+
+void c_world::overrideFOV(view_setup_t* view) {
+    if (!view || !interfaces::m_engine->is_in_game() || !globals::config::worldFov)
+        return;
+
+    if (view->m_fov == globals::config::worldFov)
+        return;
+
+    view->m_fov = globals::config::worldFov;
+}

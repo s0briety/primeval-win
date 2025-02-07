@@ -183,15 +183,53 @@ void RenderVisualsTab()
 		render::DrawSwitch("ESP", &globals::config::espEnabled);
 		if (globals::config::espEnabled)
 		{
-			render::DrawSwitch("Enemy ESP", &globals::config::espEnemies);
-			render::DrawSwitch("Teammate ESP", &globals::config::espTeammates);
-			render::DrawSwitch("Self ESP", &globals::config::espSelf);
-			render::drawSlider("ESP Distance", (float*)&globals::config::espDistance, 1, 1000, "%d", ImGuiSliderFlags_AlwaysClamp);
-			render::DrawSwitch("Health Bar", &globals::config::espHealth);
-			render::DrawSwitch("Weapon", &globals::config::espWeapon);
-			render::DrawSwitch("Skeleton", &globals::config::espSkeleton);
-			render::DrawSwitch("Boxes", &globals::config::espBox);
-			ImGui::ColorEdit4("ESP Color", (float*)&globals::config::espColor);
+			// Enemy Settings
+			render::DrawSwitch("Enemy ESP", &globals::config::espConfig.enemy.enabled);
+			if (globals::config::espConfig.enemy.enabled)
+			{
+				render::DrawSwitch("Enemy Boxes", &globals::config::espConfig.enemy.box);
+				render::DrawColorPicker("Enemy Box Primary Color", &globals::config::espConfig.enemy.boxPrimary);
+				render::DrawColorPicker("Enemy Box Secondary Color", &globals::config::espConfig.enemy.boxSecondary);
+				render::DrawSwitch("Enemy Health Bar", &globals::config::espConfig.enemy.healthBar);
+				render::DrawColorPicker("Enemy Health Primary Color", &globals::config::espConfig.enemy.HealthPrimary);
+				render::DrawSwitch("Enemy Weapon", &globals::config::espConfig.enemy.weapon);
+				render::DrawColorPicker("Enemy Weapon Primary Color", &globals::config::espConfig.enemy.WeaponPrimary);
+				render::DrawSwitch("Enemy Skeleton", &globals::config::espConfig.enemy.skeleton);
+				render::DrawColorPicker("Enemy Skeleton Primary Color", &globals::config::espConfig.enemy.SkeletonPrimary);
+				render::drawSlider("Enemy ESP Distance", &globals::config::espConfig.enemy.distance, 1, 1000);
+			}
+
+			// Teammate Settings
+			render::DrawSwitch("Teammate ESP", &globals::config::espConfig.teammate.enabled);
+			if (globals::config::espConfig.teammate.enabled)
+			{
+				render::DrawSwitch("Teammate Boxes", &globals::config::espConfig.teammate.box);
+				render::DrawColorPicker("Teammate Primary Color", &globals::config::espConfig.teammate.boxPrimary);
+				render::DrawColorPicker("Teammate Secondary Color", &globals::config::espConfig.teammate.boxSecondary);
+				render::DrawSwitch("Teammate Health Bar", &globals::config::espConfig.teammate.healthBar);
+				render::DrawColorPicker("Teammate Health Primary Color", &globals::config::espConfig.teammate.HealthPrimary);
+				render::DrawSwitch("Teammate Weapon", &globals::config::espConfig.teammate.weapon);
+				render::DrawColorPicker("Teammate Weapon Primary Color", &globals::config::espConfig.teammate.WeaponPrimary);
+				render::DrawSwitch("Teammate Skeleton", &globals::config::espConfig.teammate.skeleton);
+				render::DrawColorPicker("Teammate Skeleton Primary Color", &globals::config::espConfig.teammate.SkeletonPrimary);
+				render::drawSlider("Teammate ESP Distance", &globals::config::espConfig.teammate.distance, 1, 1000);
+			}
+
+			// Self Settings
+			render::DrawSwitch("Self ESP", &globals::config::espConfig.self.enabled);
+			if (globals::config::espConfig.self.enabled)
+			{
+				render::DrawSwitch("Self Boxes", &globals::config::espConfig.self.box);
+				render::DrawColorPicker("Self Primary Color", &globals::config::espConfig.self.boxPrimary);
+				render::DrawColorPicker("Self Secondary Color", &globals::config::espConfig.self.boxSecondary);
+				render::DrawSwitch("Self Health Bar", &globals::config::espConfig.self.healthBar);
+				render::DrawColorPicker("Self Health Primary Color", &globals::config::espConfig.self.HealthPrimary);
+				render::DrawSwitch("Self Weapon", &globals::config::espConfig.self.weapon);
+				render::DrawColorPicker("Self Weapon Primary Color", &globals::config::espConfig.self.WeaponPrimary);
+				render::DrawSwitch("Self Skeleton", &globals::config::espConfig.self.skeleton);
+				render::DrawColorPicker("Self Skeleton Primary Color", &globals::config::espConfig.self.SkeletonPrimary);
+				render::drawSlider("Self ESP Distance", &globals::config::espConfig.self.distance, 1, 1000);
+			}
 		}
 		ImGui::EndGroup();
 

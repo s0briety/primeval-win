@@ -272,7 +272,7 @@ namespace render {
 		ImGui::SetCursorScreenPos(pos);
 
 		ImGui::SetNextItemWidth(30.f);
-		ImGui::ColorEdit4(label, (float*)&color, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_NoLabel);
+		ImGui::ColorEdit4(label, (float*)color, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_NoLabel);
 
 		adjustment = adjustment + 40.f;
 	}

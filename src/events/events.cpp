@@ -8,6 +8,7 @@ namespace events {
 	void init() {
 		ADD_CALLBACK("player_hurt", player_hurt);
 		ADD_CALLBACK("cs_game_disconnected", cs_game_disconnected)
+		ADD_CALLBACK("bullet_impact", bullet_impact)
 	}
 
 	void undo() { interfaces::m_event_manager->remove_listener(&m_listener); }

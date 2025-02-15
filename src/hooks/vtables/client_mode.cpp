@@ -34,15 +34,15 @@ bool __fastcall hooks::client_mode::do_post_screen_space_effects::fn(void* ecx, 
 
         if (client_class->m_class_id == C_CS_PLAYER) {
             if (glowTable[2].enabled && glow_object.m_entity == globals::m_local) {
-                color = globals::ImColorToCol_T(glowTable[2].primary);
+                color = glowTable[2].primary;
                 index = 2;
             }
             else if (glowTable[1].enabled && team == local_team && glow_object.m_entity != globals::m_local) {
-                color = globals::ImColorToCol_T(glowTable[1].primary);
+                color = glowTable[1].primary;
                 index = 1;
             }
             else if (glowTable[0].enabled && team != local_team) {
-                color = globals::ImColorToCol_T(glowTable[0].primary);
+                color = glowTable[0].primary;
                 index = 0;
             }
 

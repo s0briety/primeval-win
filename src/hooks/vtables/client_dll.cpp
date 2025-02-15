@@ -45,6 +45,8 @@ void __stdcall hooks::client_dll::create_move::fn(int sequence_number, float inp
 
 	globals::m_cur_cmd = cmd;
 
+	gameEntityHandler->process();
+
 	thirdperson->EnterThirdPerson();
 
 	movement->set_view_angles(cmd->m_view_angles);
@@ -57,16 +59,7 @@ void __stdcall hooks::client_dll::create_move::fn(int sequence_number, float inp
 
 	/* */
 
-	if (globals::config::silentAimEnabled)
-	{
-		interfaces::m_engine->set_view_angles(cmd->m_view_angles);
-		aimbot->run(cmd);
-	}
-	else
-	{
-		aimbot->run(cmd);
-		interfaces::m_engine->set_view_angles(cmd->m_view_angles);
-	}
+	aimbot->run();
 
 	engine_prediction->restore();
 

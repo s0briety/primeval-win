@@ -21,6 +21,7 @@ namespace input {
 	extern bool get_key(KeyBind& bind);
 
 	extern bool m_blocked;
+	extern bool m_Inactive;
 
 	extern HWND m_hwnd;
 	extern WNDPROC m_original_wnd_proc;

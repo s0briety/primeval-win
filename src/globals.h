@@ -10,15 +10,41 @@ namespace globals {
         extern qangle_t		m_anim;
     }
 
-    namespace game {
-        extern auto ConsoleLog(std::string_view msg, col_t color) -> void;
-    }
+    struct ShotData {
+        int shotIndex;
+        int attackerIndex;
+        int targetIndex;
+        int hitgroup = 0;
+        int damage = 0;
+        float time;
+        float hitChance;
+        e_hitboxes targetHitbox;
+        c_base_combat_weapon* weapon;
+        vec3_t impactPos = vec3_t(0, 0, 0);
+
+        bool kill;
+        bool processed = false;
+    };
 
     struct visualStruct {
         bool enabled;
         int type;
         ImVec4 primary;
         ImVec4 secondary;
+    };
+
+    enum class EntityType {
+        Player,
+        NonPlayer
+    };
+
+    struct EntityData {
+        i_client_entity* entity;
+        EntityType type;
+
+        bool operator==(const EntityData& other) const {
+            return entity == other.entity && type == other.type;
+        }
     };
 
     struct ESPSettings {
@@ -40,6 +66,22 @@ namespace globals {
         ESPSettings teammate;
         ESPSettings self;
     };
+
+    namespace game {
+        extern auto ConsoleLog(std::string_view msg, col_t color) -> void;
+
+        namespace user {
+            extern bool can_shoot;
+            extern bool is_frozen;
+            extern bool last_shot;
+            extern float lastShotTime;
+            extern float lastScopeTime;
+            extern bool TryingToShoot;
+
+            extern std::vector<ShotData> m_ShotData;
+            extern int ShotCount;
+        }
+    }
 
 	namespace config
 	{
@@ -74,6 +116,9 @@ namespace globals {
         // Aimbot Multipoint
         extern Hitbox multipointTable[8];
 
+        // Autostop
+        extern Combostruct autostopTable[6];
+
         extern float multipointHead;
         extern float multipointBody;
 
@@ -84,9 +129,6 @@ namespace globals {
         extern float HitchanceOverride;
         extern float aimbotMinDamage;
         extern float MinDamageOverride;
-
-        // Autostop
-        extern Combostruct autostopTable[6];
 
         // Anti-Aim
         extern bool antiAimEnabled;
@@ -124,8 +166,6 @@ namespace globals {
         extern std::string configName;
 
 	}
-
-    extern col_t ImColorToCol_T(const ImColor& imColor);
 
 	extern HMODULE			m_module;
 	extern c_local_player	m_local;

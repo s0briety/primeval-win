@@ -1,4 +1,5 @@
 #pragma once
+#include "../imgui/imgui.h"
 
 struct KeyBind
 {
@@ -409,6 +410,18 @@ struct col_t {
 	col_t(int r, int g, int b) { set(r, g, b, 255); }
 	col_t(int r, int g, int b, int a) { set(r, g, b, a); }
 	col_t(const col_t& col, int a) { set(col.r(), col.g(), col.b(), a); }
+	col_t(const ImColor& imColor) {
+		set(static_cast<int>(imColor.Value.x * 255.f),
+			static_cast<int>(imColor.Value.y * 255.f),
+			static_cast<int>(imColor.Value.z * 255.f),
+			static_cast<int>(imColor.Value.w * 255.f));
+	}
+	col_t(const ImVec4& imVec4) {
+		set(static_cast<int>(imVec4.x * 255.f),
+			static_cast<int>(imVec4.y * 255.f),
+			static_cast<int>(imVec4.z * 255.f),
+			static_cast<int>(imVec4.w * 255.f));
+	}
 
 	std::array<uint8_t, 4> m_value = {};
 

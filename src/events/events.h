@@ -20,6 +20,8 @@ namespace events {
 
 	void cs_game_disconnected(i_game_event* event);
 
+	void bullet_impact(i_game_event* event);
+
 	extern c_listener m_listener;
 
 	extern std::unordered_map<uint32_t, std::function<void(i_game_event*)>> m_callbacks;

@@ -70,7 +70,7 @@ void init(const HMODULE module) {
 
 		input::undo();
 
-		Sleep(200);
+		std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
 		FreeLibraryAndExitThread(module, 0);
 

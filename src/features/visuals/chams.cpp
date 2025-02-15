@@ -52,72 +52,66 @@ bool c_chams::on_draw_model(i_model_render* ecx, void* context, const draw_model
 
     if (player->get_team() != globals::m_local->get_team() && globals::config::chamsTable[0].enabled) {
         ImColor color = globals::config::chamsTable[0].primary;
-        col_t convertedColor = globals::ImColorToCol_T(color);
 
         e_material_type type = static_cast<e_material_type>(globals::config::chamsTable[0].type);
 
         if (type == MATERIAL_TYPE_GLOW) {
             ImColor secondary = globals::config::chamsTable[0].secondary;
-            col_t convertedSecondary = globals::ImColorToCol_T(secondary);
 
-            override_material(MATERIAL_TYPE_REGULAR, convertedColor, true);
+            override_material(MATERIAL_TYPE_REGULAR, color, true);
             original(ecx, context, state, info, bones);
             // override_material(MATERIAL_TYPE_REGULAR, convertedColor, false);
-            override_material(MATERIAL_TYPE_GLOW, convertedSecondary, true);
+            override_material(MATERIAL_TYPE_GLOW, secondary, true);
             original(ecx, context, state, info, bones);
             // override_material(MATERIAL_TYPE_GLOW, convertedSecondary, false);
             return true;
         }
 
-        override_material(type, convertedColor, true);
+        override_material(type, color, true);
         original(ecx, context, state, info, bones);
         // override_material(type, convertedColor, false);
 
     }
     else if (player->get_team() == globals::m_local->get_team() && globals::config::chamsTable[1].enabled && player != globals::m_local) {
         ImColor color = globals::config::chamsTable[1].primary;
-        col_t convertedColor = globals::ImColorToCol_T(color);
 
         e_material_type type = static_cast<e_material_type>(globals::config::chamsTable[1].type);
 
         if (type == MATERIAL_TYPE_GLOW) {
             ImColor secondary = globals::config::chamsTable[1].secondary;
-            col_t convertedSecondary = globals::ImColorToCol_T(secondary);
 
-            override_material(MATERIAL_TYPE_REGULAR, convertedColor, true);
+            override_material(MATERIAL_TYPE_REGULAR, color, true);
             original(ecx, context, state, info, bones);
             // override_material(MATERIAL_TYPE_REGULAR, convertedColor, false);
-            override_material(MATERIAL_TYPE_GLOW, convertedSecondary, true);
+            override_material(MATERIAL_TYPE_GLOW, secondary, true);
             original(ecx, context, state, info, bones);
             // override_material(MATERIAL_TYPE_GLOW, convertedSecondary, false);
             return true;
         }
 
-        override_material(type, convertedColor, true);
+        override_material(type, color, true);
         original(ecx, context, state, info, bones);
         // override_material(type, convertedColor, false);
 
     }
     else if (player == globals::m_local && globals::config::chamsTable[2].enabled) {
         ImColor color = globals::config::chamsTable[2].primary;
-        col_t convertedColor = globals::ImColorToCol_T(color);
 
         e_material_type type = static_cast<e_material_type>(globals::config::chamsTable[2].type);
 
         if (type == MATERIAL_TYPE_GLOW) {
             ImColor secondary = globals::config::chamsTable[2].secondary;
-            col_t convertedSecondary = globals::ImColorToCol_T(secondary);
 
-            override_material(MATERIAL_TYPE_REGULAR, convertedColor, true);
+            override_material(MATERIAL_TYPE_REGULAR, color, true);
             original(ecx, context, state, info, bones);
             // override_material(MATERIAL_TYPE_REGULAR, convertedColor, false);
-            override_material(MATERIAL_TYPE_GLOW, convertedSecondary, true);
+            override_material(MATERIAL_TYPE_GLOW, secondary, true);
             original(ecx, context, state, info, bones);
             // override_material(MATERIAL_TYPE_GLOW, convertedSecondary, false);
             return true;
         }
 
-        override_material(type, convertedColor, true);
+        override_material(type, color, true);
         original(ecx, context, state, info, bones);
         // override_material(type, convertedColor, false);
 

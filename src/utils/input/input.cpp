@@ -60,14 +60,25 @@ namespace input {
 
 	long __stdcall wnd_proc(HWND hwnd, uint32_t msg, uint32_t w_param, uint32_t l_param) {
 		if (m_blocked) { 
-			if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, w_param, l_param))
-				return 1;
+			ImGui_ImplWin32_WndProcHandler(hwnd, msg, w_param, l_param);
+
+			if (!m_Inactive)
+			{
+				m_Inactive = true;
+				CallWindowProc(m_original_wnd_proc, hwnd, WM_ACTIVATE, WA_INACTIVE, 0);
+			}
+			else if (m_Inactive)
+			{
+				m_Inactive = false;
+				CallWindowProc(m_original_wnd_proc, hwnd, WM_ACTIVATE, WA_INACTIVE, 0);
+			}
 		}
 
-		return CallWindowProcA(m_original_wnd_proc, hwnd, msg, w_param, l_param);
+		return m_blocked ? m_blocked : CallWindowProc(m_original_wnd_proc, hwnd, msg, w_param, l_param);
 	}
 
 	bool m_blocked = false;
+	bool m_Inactive = false;
 
 	HWND m_hwnd;
 	WNDPROC m_original_wnd_proc;

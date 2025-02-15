@@ -59,6 +59,15 @@ void c_esp::RenderHealth(int target, vec2_t top, vec2_t bottom, c_cs_player* pla
 
 	interfaces::m_surface->draw_set_color(r, g, b, a);
 	interfaces::m_surface->draw_filled_rect(left - 5, bottom.y - (h * healthFrac), left - 4, bottom.y);
+
+	std::string healthString = std::to_string(static_cast<int>(healthFrac * 100.f));
+	const char* HealthString = healthString.c_str();
+
+	int width = 0;
+	int height = 0;
+	interfaces::m_engine->get_screen_size(width, height);
+	D3DCOLOR color = D3DCOLOR_RGBA(255, 255, 255, 255);
+
 }
 
 void c_esp::RenderBox(int target, vec2_t top, vec2_t bottom) {
@@ -152,7 +161,7 @@ void c_esp::RenderEsp(c_cs_player* player, int target, c_base_player* local, mat
 	switch (target)
 	{
 	case ENEMY:
-		if (!globals::config::espConfig.enemy.enabled || local->get_abs_origin().dist_to(origin) > float(globals::config::espConfig.enemy.distance * 10.f))
+		if (!globals::config::espConfig.enemy.enabled || local->get_abs_origin().dist_to(origin) > float(globals::config::espConfig.enemy.distance * 100.f))
 			return;
 
 		if (globals::config::espConfig.enemy.box)
@@ -162,7 +171,7 @@ void c_esp::RenderEsp(c_cs_player* player, int target, c_base_player* local, mat
 			RenderHealth(target, top, bottom, player);
 		break;
 	case TEAMMATE:
-		if (!globals::config::espConfig.teammate.enabled || local->get_abs_origin().dist_to(origin) > float(globals::config::espConfig.teammate.distance * 10.f))
+		if (!globals::config::espConfig.teammate.enabled || local->get_abs_origin().dist_to(origin) > float(globals::config::espConfig.teammate.distance * 100.f))
 			return;
 
 		if (globals::config::espConfig.teammate.box)
@@ -172,7 +181,7 @@ void c_esp::RenderEsp(c_cs_player* player, int target, c_base_player* local, mat
 			RenderHealth(target, top, bottom, player);
 		break;
 	case SELF:
-		if (!globals::config::espConfig.self.enabled || local->get_abs_origin().dist_to(origin) > float(globals::config::espConfig.self.distance * 10.f))
+		if (!globals::config::espConfig.self.enabled || local->get_abs_origin().dist_to(origin) > float(globals::config::espConfig.self.distance * 100.f))
 			return;
 
 		if (globals::config::espConfig.self.box)
@@ -190,14 +199,12 @@ void c_esp::CallEsp() {
 	if (!globals::config::espEnabled || !globals::m_local || !interfaces::m_engine->is_in_game())
 		return;
 
-	for (int i = 1; i < interfaces::m_global_vars->m_max_clients; ++i)
+	for (const auto& data : gameEntityHandler->EntityStorage)
 	{
-		const auto entity = reinterpret_cast<c_base_entity*>(interfaces::m_entity_list->get_client_entity(i));
-
-		if (!entity || !entity->is_player())
+		if (!data.entity || data.type != globals::EntityType::Player)
 			continue;
 
-		c_cs_player* player = reinterpret_cast<c_cs_player*>(entity);
+		c_cs_player* player = reinterpret_cast<c_cs_player*>(data.entity);
 
 		int target = ENEMY;
 

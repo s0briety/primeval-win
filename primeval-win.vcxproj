@@ -11,11 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\events\callbacks\bullet_impact.cpp" />
     <ClCompile Include="src\events\callbacks\cs_game_disconnected.cpp" />
     <ClCompile Include="src\events\callbacks\player_hurt.cpp" />
     <ClCompile Include="src\events\events.cpp" />
+    <ClCompile Include="src\features\helpers\entity.cpp" />
     <ClCompile Include="src\features\misc\movement.cpp" />
     <ClCompile Include="src\features\ragebot\aimbot.cpp" />
+    <ClCompile Include="src\features\ragebot\autostop.cpp" />
     <ClCompile Include="src\features\ragebot\prediction.cpp" />
     <ClCompile Include="src\features\visuals\chams.cpp" />
     <ClCompile Include="src\features\visuals\esp.cpp" />
@@ -56,8 +59,10 @@
     <ClInclude Include="src\common_includes.h" />
     <ClInclude Include="src\events\events.h" />
     <ClInclude Include="src\features\features.h" />
+    <ClInclude Include="src\features\helpers\entity.h" />
     <ClInclude Include="src\features\misc\movement.h" />
     <ClInclude Include="src\features\ragebot\aimbot.h" />
+    <ClInclude Include="src\features\ragebot\autostop.h" />
     <ClInclude Include="src\features\ragebot\prediction.h" />
     <ClInclude Include="src\features\visuals\chams.h" />
     <ClInclude Include="src\features\visuals\esp.h" />

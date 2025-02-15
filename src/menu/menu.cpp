@@ -131,6 +131,38 @@ void RenderAimbotTab()
 			ImGui::EndCombo();
 		}
 
+		ImGui::Text("Autostop Selection");
+		std::string selectedAutostop = "";
+		for (int i = 0; i < 6; i++)
+		{
+			if (globals::config::autostopTable[i].isEnabled)
+			{
+				if (!selectedAutostop.empty())
+					selectedAutostop += ", ";
+				selectedAutostop += globals::config::autostopTable[i].label;
+			}
+		}
+
+		const char* asText = selectedAutostop.empty() ? "Select Autostop" : selectedAutostop.c_str();
+
+		if (ImGui::BeginCombo("##autostops", asText, ImGuiComboFlags_HeightLarge))
+		{
+			for (int i = 0; i < 6; i++)
+			{
+				const char* label = globals::config::autostopTable[i].label;
+				if (!label)
+					label = "Unknown";
+
+				bool selected = globals::config::autostopTable[i].isEnabled;
+
+				if (ImGui::Selectable(label, selected, ImGuiSelectableFlags_DontClosePopups))
+				{
+					globals::config::autostopTable[i].isEnabled = !selected;
+				}
+			}
+			ImGui::EndCombo();
+		}
+
 		render::drawSlider("Min. Hitchance", &globals::config::aimbotHitchance, 1.0f, 100.0f);
 		render::drawKeyBind("Hitchance Override", globals::config::HitchanceOverrideKey, globals::config::HitchanceOverride, 1.0f, 100.0f);
 		render::drawSlider("Min. Damage", &globals::config::aimbotMinDamage, 1.0f, 110.0f);

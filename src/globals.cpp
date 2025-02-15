@@ -16,6 +16,18 @@ namespace globals {
 
             interfaces::m_cvar_system->console_print(color, output.data());
         }
+
+        namespace user {
+            bool can_shoot = true;
+            bool is_frozen = false;
+            bool last_shot = false;
+            float lastShotTime = 0.f;
+            float lastScopeTime = 0.f;
+            bool TryingToShoot = false;
+
+            std::vector<ShotData> m_ShotData;
+            int ShotCount = 0;
+        }
     }
 
     namespace config
@@ -68,6 +80,16 @@ namespace globals {
             { "Feet", false, { HITBOX_LEFT_FOOT, HITBOX_RIGHT_FOOT } }
         };
 
+        // Autostop
+        Combostruct autostopTable[6] = {
+            { "Early", false, 1 },
+            { "Between Shots", false, 2 },
+            { "Aggressive", false, 3 },
+            { "Passive", false, 4 },
+            { "Smart", false, 5 },
+            { "Jumpscout", false, 6 },
+        };
+
         float multipointHead = 0.0f;
         float multipointBody = 0.0f;
 
@@ -78,16 +100,6 @@ namespace globals {
         float HitchanceOverride = 1.0f;
         float aimbotMinDamage = 110.0f;
         float MinDamageOverride = 1.0f;
-
-        // Autostop
-        Combostruct autostopTable[6] = {
-            { "Early", false, 1 },
-            { "Between Shots", false, 2 },
-            { "Aggressive", false, 3 },
-            { "Passive", false, 4 },
-            { "Smart", false, 5 },
-            { "Jumpscout", false, 6 },
-        };
 
         // Anti-Aim
         bool antiAimEnabled = false;
@@ -132,15 +144,6 @@ namespace globals {
         // Configurations
         std::string configName = "default.cfg";
 
-    }
-
-    col_t ImColorToCol_T(const ImColor& imColor) {
-        int r = static_cast<int>(imColor.Value.x * 255.f);
-        int g = static_cast<int>(imColor.Value.y * 255.f);
-        int b = static_cast<int>(imColor.Value.z * 255.f);
-        int a = static_cast<int>(imColor.Value.w * 255.f);
-
-        return col_t(r, g, b, a);
     }
 
 	HMODULE			m_module = nullptr;

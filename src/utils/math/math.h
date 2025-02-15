@@ -17,6 +17,10 @@ namespace math {
 		return value;
 	}
 
+	__forceinline float __fastcall random(float min, float max) {
+		return min + (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) * (max - min);
+	}
+
 	double __forceinline __declspec (naked) __fastcall sin(double x) {
 		__asm {
 			fld	qword ptr [esp + 4]
@@ -135,6 +139,35 @@ namespace math {
 			fstp st(1)
 			pop	eax
 			ret	8
+		}
+	}
+
+	__forceinline void AngleVectors(const qangle_t& angles, vec3_t* forward, vec3_t* right = nullptr, vec3_t* up = nullptr) {
+		float sp, sy, sr, cp, cy, cr;
+
+		sy = sin(deg_to_rad(angles.y));
+		cy = cos(deg_to_rad(angles.y));
+		sp = sin(deg_to_rad(angles.x));
+		cp = cos(deg_to_rad(angles.x));
+		sr = sin(deg_to_rad(angles.z));
+		cr = cos(deg_to_rad(angles.z));
+
+		if (forward) {
+			forward->x = cp * cy;
+			forward->y = cp * sy;
+			forward->z = -sp;
+		}
+
+		if (right) {
+			right->x = (-1 * sr * sp * cy + -1 * cr * -sy);
+			right->y = (-1 * sr * sp * sy + -1 * cr * cy);
+			right->z = -1 * sr * cp;
+		}
+
+		if (up) {
+			up->x = (cr * sp * cy + -sr * -sy);
+			up->y = (cr * sp * sy + -sr * cy);
+			up->z = cr * cp;
 		}
 	}
 }

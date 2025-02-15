@@ -135,6 +135,15 @@
     <ClCompile Include="src\features\visuals\esp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\features\helpers\entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\features\ragebot\autostop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\events\callbacks\bullet_impact.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\events\events.h">
@@ -483,6 +492,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\features\visuals\esp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\features\helpers\entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\features\ragebot\autostop.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

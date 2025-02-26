@@ -25,17 +25,22 @@ vec3_t c_aimbot::PredictTargetPosition(const vec3_t& targetPos, const vec3_t& ta
     float predictionTime = interfaces::m_global_vars->m_interval_per_tick * 0.5f;
     vec3_t predictedPos = targetPos + (direction * velocity * predictionTime);
 
-    globals::game::ConsoleLog(
-        "Predicted Position: (" + std::to_string(predictedPos.x) + ", " +
-        std::to_string(predictedPos.y) + ", " + std::to_string(predictedPos.z) + ")",
-        globals::config::secondaryColor
-    );
-    globals::game::ConsoleLog(
-        "Target Velocity: " + std::to_string(velocity),
-        globals::config::secondaryColor
-    );
-
     return predictedPos;
+}
+
+vec3_t c_aimbot::TransformHitboxPoint(const mstudiobbox_t* hitbox, const matrix3x4_t* bones)
+{
+    vec3_t hitboxCenter;
+    hitboxCenter.x = (hitbox->m_obb_min.x + hitbox->m_obb_max.x) * 0.5f;
+    hitboxCenter.y = (hitbox->m_obb_min.y + hitbox->m_obb_max.y) * 0.5f;
+    hitboxCenter.z = (hitbox->m_obb_min.z + hitbox->m_obb_max.z) * 0.5f;
+
+    vec3_t transformedCenter;
+    transformedCenter.x = bones[hitbox->m_bone].m_value[0][0] * hitboxCenter.x + bones[hitbox->m_bone].m_value[0][1] * hitboxCenter.y + bones[hitbox->m_bone].m_value[0][2] * hitboxCenter.z + bones[hitbox->m_bone].m_value[0][3];
+    transformedCenter.y = bones[hitbox->m_bone].m_value[1][0] * hitboxCenter.x + bones[hitbox->m_bone].m_value[1][1] * hitboxCenter.y + bones[hitbox->m_bone].m_value[1][2] * hitboxCenter.z + bones[hitbox->m_bone].m_value[1][3];
+    transformedCenter.z = bones[hitbox->m_bone].m_value[2][0] * hitboxCenter.x + bones[hitbox->m_bone].m_value[2][1] * hitboxCenter.y + bones[hitbox->m_bone].m_value[2][2] * hitboxCenter.z + bones[hitbox->m_bone].m_value[2][3];
+
+    return transformedCenter;
 }
 
 bool c_aimbot::TraceToTarget(const vec3_t& eyePos, const vec3_t& position, const vec3_t& spreadDirection, c_base_player* target) {
@@ -99,27 +104,28 @@ float c_aimbot::CalculateHitChance(c_base_combat_weapon* weapon, c_base_player* 
     }
 
     float hitPercentage = (hitCount / static_cast<float>(totalTraces)) * 100.f;
-    globals::game::ConsoleLog(std::to_string(hitPercentage) + " | " + std::to_string(hitCount), globals::config::secondaryColor);
     return hitPercentage;
 }
 
 void c_aimbot::on_aimbot_fire(c_base_player* target, float time, float hitChance, e_hitboxes targetHitbox, c_base_combat_weapon* weapon) {
-    globals::game::user::ShotCount++;
 
-    globals::ShotData newShot;
     player_info_t targetInfo;
-
     interfaces::m_engine->get_player_info(target->get_index(), &targetInfo);
+    int attackerID = globals::m_local->get_info().m_user_id;
+    auto& shot = globals::game::user::m_ShotData[globals::game::user::ShotCount];
 
-    newShot.shotIndex = globals::game::user::ShotCount;
-	newShot.attackerIndex = globals::m_local->get_info().m_user_id;
-	newShot.targetIndex = targetInfo.m_user_id;
-	newShot.time = time;
-	newShot.hitChance = hitChance;
-	newShot.targetHitbox = targetHitbox;
-	newShot.weapon = weapon;    
-	globals::game::user::m_ShotData.push_back(newShot);
+    shot.shotIndex = globals::game::user::ShotCount;
+    shot.attackerIndex = attackerID;
+    shot.targetIndex = targetInfo.m_user_id;
+    shot.time = time;
+    shot.hitChance = hitChance;
+    shot.targetHitbox = targetHitbox;
+    shot.weapon = weapon;
+    shot.processed = false;
+
+    logging->aimbot_log(shot.shotIndex);
 }
+
 
 bool c_aimbot::fireWeapon(int weaponType) {
     if (weaponType != WEAPON_TYPE_PISTOL)
@@ -243,15 +249,7 @@ void c_aimbot::run()
                 if (!hitbox)
                     continue;
 
-                vec3_t hitboxCenter;
-                hitboxCenter.x = (hitbox->m_obb_min.x + hitbox->m_obb_max.x) * 0.5f;
-                hitboxCenter.y = (hitbox->m_obb_min.y + hitbox->m_obb_max.y) * 0.5f;
-                hitboxCenter.z = (hitbox->m_obb_min.z + hitbox->m_obb_max.z) * 0.5f;
-
-                vec3_t transformedCenter;
-                transformedCenter.x = bones[hitbox->m_bone].m_value[0][0] * hitboxCenter.x + bones[hitbox->m_bone].m_value[0][1] * hitboxCenter.y + bones[hitbox->m_bone].m_value[0][2] * hitboxCenter.z + bones[hitbox->m_bone].m_value[0][3];
-                transformedCenter.y = bones[hitbox->m_bone].m_value[1][0] * hitboxCenter.x + bones[hitbox->m_bone].m_value[1][1] * hitboxCenter.y + bones[hitbox->m_bone].m_value[1][2] * hitboxCenter.z + bones[hitbox->m_bone].m_value[1][3];
-                transformedCenter.z = bones[hitbox->m_bone].m_value[2][0] * hitboxCenter.x + bones[hitbox->m_bone].m_value[2][1] * hitboxCenter.y + bones[hitbox->m_bone].m_value[2][2] * hitboxCenter.z + bones[hitbox->m_bone].m_value[2][3];
+                vec3_t transformedCenter = TransformHitboxPoint(hitbox, bones);
 
                 if (globals::config::multipointTable[j].isEnabled)
                 {
@@ -341,11 +339,10 @@ void c_aimbot::run()
             {
                 if (fireWeapon(weaponType))
                 {
-					on_aimbot_fire(bestTarget, interfaces::m_global_vars->m_cur_time, currentHitchance, bestHitbox, activeWeapon);
-
                     bool status = interfaces::m_global_vars->m_cur_time >= activeWeapon->get_next_primary_attack();
                     globals::game::user::can_shoot = status;
                     globals::game::user::TryingToShoot = !status;
+                    on_aimbot_fire(bestTarget, interfaces::m_global_vars->m_cur_time, currentHitchance, bestHitbox, activeWeapon);
                 }
                 else
                 {

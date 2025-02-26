@@ -7,16 +7,6 @@ namespace globals {
 	}
 
     namespace game {
-        auto ConsoleLog(std::string_view msg, col_t color) -> void
-        {
-
-            std::string output = "[PRIMEVAL] | ";
-            output.append(msg);
-            output.append("\n");
-
-            interfaces::m_cvar_system->console_print(color, output.data());
-        }
-
         namespace user {
             bool can_shoot = true;
             bool is_frozen = false;
@@ -25,7 +15,7 @@ namespace globals {
             float lastScopeTime = 0.f;
             bool TryingToShoot = false;
 
-            std::vector<ShotData> m_ShotData;
+            std::unordered_map<int, ShotData> m_ShotData;
             int ShotCount = 0;
         }
     }

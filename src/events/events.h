@@ -16,9 +16,13 @@ namespace events {
 
 	void undo();
 
+	void player_death(i_game_event* event);
+
 	void player_hurt(i_game_event* event);
 
 	void cs_game_disconnected(i_game_event* event);
+
+	void weapon_fire(i_game_event* event);
 
 	void bullet_impact(i_game_event* event);
 

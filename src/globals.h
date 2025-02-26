@@ -14,16 +14,16 @@ namespace globals {
         int shotIndex;
         int attackerIndex;
         int targetIndex;
-        int hitgroup = 0;
-        int damage = 0;
         float time;
         float hitChance;
         e_hitboxes targetHitbox;
         c_base_combat_weapon* weapon;
-        vec3_t impactPos = vec3_t(0, 0, 0);
-
+        vec3_t impactPos;
+        int damage;
+        int hitgroup;
         bool kill;
         bool processed = false;
+        std::string message;
     };
 
     struct visualStruct {
@@ -68,8 +68,6 @@ namespace globals {
     };
 
     namespace game {
-        extern auto ConsoleLog(std::string_view msg, col_t color) -> void;
-
         namespace user {
             extern bool can_shoot;
             extern bool is_frozen;
@@ -78,7 +76,7 @@ namespace globals {
             extern float lastScopeTime;
             extern bool TryingToShoot;
 
-            extern std::vector<ShotData> m_ShotData;
+            extern std::unordered_map<int, ShotData> m_ShotData;
             extern int ShotCount;
         }
     }

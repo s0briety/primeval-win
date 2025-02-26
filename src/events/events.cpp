@@ -6,6 +6,7 @@ namespace events {
 	void c_listener::fire_game_event(i_game_event* event) { m_callbacks.at(FNV1A_RT(event->get_name()))(event); }
 
 	void init() {
+		ADD_CALLBACK("player_death", player_death);
 		ADD_CALLBACK("player_hurt", player_hurt);
 		ADD_CALLBACK("cs_game_disconnected", cs_game_disconnected)
 		ADD_CALLBACK("bullet_impact", bullet_impact)

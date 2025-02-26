@@ -8,3 +8,4 @@
 #include "ragebot/aimbot.h"
 #include "ragebot/autostop.h"
 #include "misc/movement.h"
+#include "misc/logging.h"

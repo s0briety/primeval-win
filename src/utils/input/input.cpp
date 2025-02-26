@@ -11,6 +11,7 @@ namespace input {
 		m_hwnd = creation_parameters.hFocusWindow;
 
 		m_original_wnd_proc = reinterpret_cast<WNDPROC>(SetWindowLongA(m_hwnd, GWL_WNDPROC, reinterpret_cast<long>(wnd_proc)));
+
 	}
 
 	void undo() { SetWindowLongPtrA(m_hwnd, GWL_WNDPROC, reinterpret_cast<long>(m_original_wnd_proc)); }
@@ -59,26 +60,19 @@ namespace input {
 	}
 
 	long __stdcall wnd_proc(HWND hwnd, uint32_t msg, uint32_t w_param, uint32_t l_param) {
-		if (m_blocked) { 
+		if (m_blocked) {
+			ImGuiIO& io = ImGui::GetIO();
 			ImGui_ImplWin32_WndProcHandler(hwnd, msg, w_param, l_param);
-
-			if (!m_Inactive)
+			if (io.WantCaptureMouse && (msg == WM_LBUTTONDOWN || msg == WM_LBUTTONUP || msg == WM_RBUTTONDOWN || msg == WM_RBUTTONUP || msg == WM_MBUTTONDOWN || msg == WM_MBUTTONUP || msg == WM_MOUSEWHEEL || msg == WM_MOUSEMOVE))
 			{
-				m_Inactive = true;
-				CallWindowProc(m_original_wnd_proc, hwnd, WM_ACTIVATE, WA_INACTIVE, 0);
-			}
-			else if (m_Inactive)
-			{
-				m_Inactive = false;
-				CallWindowProc(m_original_wnd_proc, hwnd, WM_ACTIVATE, WA_INACTIVE, 0);
+				return TRUE;
 			}
 		}
 
-		return m_blocked ? m_blocked : CallWindowProc(m_original_wnd_proc, hwnd, msg, w_param, l_param);
+		return CallWindowProcA(m_original_wnd_proc, hwnd, msg, w_param, l_param);
 	}
 
 	bool m_blocked = false;
-	bool m_Inactive = false;
 
 	HWND m_hwnd;
 	WNDPROC m_original_wnd_proc;

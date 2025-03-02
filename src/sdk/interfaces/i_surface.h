@@ -26,9 +26,6 @@ enum EFontFlag
 
 class i_surface {
 public:
-    VFUNC(unlock_cursor(), 66, void(__thiscall*)(void*))
-    VFUNC(lock_cursor(), 67, void(__thiscall*)(void*))
-    VFUNC(draw_set_color(int r, int g, int b, int a), 15, void(__thiscall*)(void*, int, int, int, int), r, g, b, a)
-    VFUNC(draw_filled_rect(int x, int y, int xx, int yy), 16, void(__thiscall*)(void*, int, int, int, int), x, y, xx, yy)
-    VFUNC(draw_outlined_rect(int x, int y, int xx, int yy), 18, void(__thiscall*)(void*, int, int, int, int), x, y, xx, yy)
+	VFUNC(unlock_cursor(), 66, void(__thiscall*)(void*))
+	VFUNC(lock_cursor(), 67, void(__thiscall*)(void*))
 };

@@ -4,13 +4,11 @@
 long __stdcall hooks::d3d_device::present::fn(IDirect3DDevice9* device, RECT* src_rect, RECT* dest_rect, HWND dest_wnd_override, RGNDATA* dirty_region) {
 	static const auto original = m_d3d_device->get_original<T>(index);
 
-	IDirect3DVertexDeclaration9* vert_dec;
-	if (device->GetVertexDeclaration(&vert_dec))
-		return original(device, src_rect, dest_rect, dest_wnd_override, dirty_region);
+	IDirect3DVertexDeclaration9* vert_dec = nullptr;
+	IDirect3DVertexShader9* vert_shader = nullptr;
 
-	IDirect3DVertexShader9* vert_shader;
-	if (device->GetVertexShader(&vert_shader))
-		return original(device, src_rect, dest_rect, dest_wnd_override, dirty_region);
+	device->GetVertexDeclaration(&vert_dec);
+	device->GetVertexShader(&vert_shader);
 
 	if (GetAsyncKeyState(globals::config::menuKey.Key) & 1)
 		globals::config::menuKey.Toggled = !globals::config::menuKey.Toggled;
@@ -19,6 +17,7 @@ long __stdcall hooks::d3d_device::present::fn(IDirect3DDevice9* device, RECT* sr
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
+	player_esp->CallEsp();
 	menu->on_paint();
 
 	ImGui::EndFrame();
@@ -35,6 +34,7 @@ long __stdcall hooks::d3d_device::reset::fn(IDirect3DDevice9* device, D3DPRESENT
 	static const auto original = m_d3d_device->get_original<T>(index);
 
 	ImGui_ImplDX9_InvalidateDeviceObjects();
+
 	const auto ret = original(device, present_params);
 	ImGui_ImplDX9_CreateDeviceObjects();
 

@@ -22,7 +22,6 @@
 
 #include "netvars/data_map.h"
 #include "netvars/netvars.h"
-
 #include "input/input.h"
 
 #include "cfg/cfg.h"

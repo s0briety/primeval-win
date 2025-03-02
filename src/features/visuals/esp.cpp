@@ -6,71 +6,69 @@ enum target_type {
 	SELF
 };
 
-void c_esp::RenderHealth(int target, vec2_t top, vec2_t bottom, c_cs_player* player) {
+void c_esp::AdjustColorTone(int& r, int& g, int& b, float brightnessFactor, float saturationFactor) {
+	r = std::clamp(static_cast<int>(r * brightnessFactor), 0, 255);
+	g = std::clamp(static_cast<int>(g * brightnessFactor), 0, 255);
+	b = std::clamp(static_cast<int>(b * brightnessFactor), 0, 255);
+
+	int maxChannel = std::max({ r, g, b });
+	if (maxChannel > 0) {
+		float scale = 255.0f / maxChannel;
+		r = std::clamp(static_cast<int>(r * scale * saturationFactor), 0, 255);
+		g = std::clamp(static_cast<int>(g * scale * saturationFactor), 0, 255);
+		b = std::clamp(static_cast<int>(b * scale * saturationFactor), 0, 255);
+	}
+}
+
+void c_esp::RenderHealth(const float health, vec2_t top, vec2_t bottom, ImColor primary)
+{
 	const float h = bottom.y - top.y;
 
 	const float w = h * 0.3f;
 
-	const auto left = static_cast<int>(top.x - w);
-	const auto right = static_cast<int>(top.x + w);
+	const auto left = (top.x - w) - 5.f;
+
+	std::string healthString = std::to_string(static_cast<int>(health));
+	const char* HealthString = healthString.c_str();
+
+	int r = primary.Value.x;
+	int g = primary.Value.y;
+	int b = primary.Value.z;
+	int a = primary.Value.w;
+
+	if (health > 0)
+		render_game::DrawText2D(fonts::smallest_pixel_14, left, h, r, g, b, a, HealthString);
+}
+
+void c_esp::RenderHealthBar(const float health, vec2_t top, vec2_t bottom, ImColor primary) {
+	const float h = bottom.y - top.y;
+
+	const float w = h * 0.3f;
+
+	const auto left = top.x - w;
+	const auto right = top.x + w;
 
 	int r = 255, g = 255, b = 255, a = 255;
 
-	switch (target)
+	if (primary)
 	{
-	case ENEMY:
-		if (globals::config::espConfig.enemy.HealthPrimary.Value.w)
-		{
-			r = globals::config::espConfig.enemy.HealthPrimary.Value.x * 255.f;
-			g = globals::config::espConfig.enemy.HealthPrimary.Value.y * 255.f;
-			b = globals::config::espConfig.enemy.HealthPrimary.Value.z * 255.f;
-			a = globals::config::espConfig.enemy.HealthPrimary.Value.w * 255.f;
-		}
-		break;
-
-	case TEAMMATE:
-		if (globals::config::espConfig.teammate.HealthPrimary.Value.w)
-		{
-			r = globals::config::espConfig.teammate.HealthPrimary.Value.x * 255.f;
-			g = globals::config::espConfig.teammate.HealthPrimary.Value.y * 255.f;
-			b = globals::config::espConfig.teammate.HealthPrimary.Value.z * 255.f;
-			a = globals::config::espConfig.teammate.HealthPrimary.Value.w * 255.f;
-		}
-		break;
-
-	case SELF:
-		if (globals::config::espConfig.self.HealthPrimary.Value.w)
-		{
-			r = globals::config::espConfig.self.HealthPrimary.Value.x * 255.f;
-			g = globals::config::espConfig.self.HealthPrimary.Value.y * 255.f;
-			b = globals::config::espConfig.self.HealthPrimary.Value.z * 255.f;
-			a = globals::config::espConfig.self.HealthPrimary.Value.w * 255.f;
-		}
-		break;
+		r = primary.Value.x * 255.f;
+		g = primary.Value.y * 255.f;
+		b = primary.Value.z * 255.f;
+		a = primary.Value.w * 255.f;
 	}
 
-	const float healthFrac = player->get_health() * 0.01f;
+	const float healthFrac = health * 0.01f;
 
-	r = (1.f - healthFrac) * r;
-	g = healthFrac * g;
+	float brightnessFactor = 0.7f + (healthFrac * 0.3f);
+	float saturationFactor = 0.8f + (healthFrac * 0.2f);
 
-	interfaces::m_surface->draw_set_color(0, 0, 0, 255);
-	interfaces::m_surface->draw_outlined_rect(left - 6, top.y - 1, left - 3, bottom.y + 1);
+	AdjustColorTone(r, g, b, brightnessFactor, saturationFactor);
 
-	interfaces::m_surface->draw_set_color(r, g, b, a);
-	interfaces::m_surface->draw_filled_rect(left - 5, bottom.y - (h * healthFrac), left - 4, bottom.y);
-
-	std::string healthString = std::to_string(static_cast<int>(healthFrac * 100.f));
-	const char* HealthString = healthString.c_str();
-
-	int width = 0;
-	int height = 0;
-	interfaces::m_engine->get_screen_size(width, height);
-	D3DCOLOR color = D3DCOLOR_RGBA(255, 255, 255, 255);
-
+	render_game::DrawHealthBar(healthFrac, h, r, g, b, a, left, right, top.y, bottom.y);
 }
 
-void c_esp::RenderBox(int target, vec2_t top, vec2_t bottom) {
+void c_esp::RenderBox(vec2_t top, vec2_t bottom, ImColor primary, ImColor secondary) {
 	const float h = bottom.y - top.y;
 
 	const float w = h * 0.3f;
@@ -81,71 +79,23 @@ void c_esp::RenderBox(int target, vec2_t top, vec2_t bottom) {
 	int r = 255, g = 255, b = 255, a = 255;
 	int rr = 0, gg = 0, bb = 0, aa = 255;
 
-	switch (target)
+	if (primary)
 	{
-	case ENEMY:
-		if (globals::config::espConfig.enemy.boxPrimary.Value.w)
-		{
-			r = globals::config::espConfig.enemy.boxPrimary.Value.x * 255.f;
-			g = globals::config::espConfig.enemy.boxPrimary.Value.y * 255.f;
-			b = globals::config::espConfig.enemy.boxPrimary.Value.z * 255.f;
-			a = globals::config::espConfig.enemy.boxPrimary.Value.w * 255.f;
-		}
-
-		if (globals::config::espConfig.enemy.boxSecondary.Value.w * 255.f)
-		{
-			rr = globals::config::espConfig.enemy.boxSecondary.Value.x * 255.f;
-			gg = globals::config::espConfig.enemy.boxSecondary.Value.y * 255.f;
-			bb = globals::config::espConfig.enemy.boxSecondary.Value.z * 255.f;
-			aa = globals::config::espConfig.enemy.boxSecondary.Value.w * 255.f;
-		}
-		break;
-
-	case TEAMMATE:
-		if (globals::config::espConfig.teammate.boxPrimary.Value.w)
-		{
-			r = globals::config::espConfig.teammate.boxPrimary.Value.x * 255.f;
-			g = globals::config::espConfig.teammate.boxPrimary.Value.y * 255.f;
-			b = globals::config::espConfig.teammate.boxPrimary.Value.z * 255.f;
-			a = globals::config::espConfig.teammate.boxPrimary.Value.w * 255.f;
-		}
-
-		if (globals::config::espConfig.teammate.boxSecondary.Value.w)
-		{
-			rr = globals::config::espConfig.teammate.boxSecondary.Value.x * 255.f;
-			gg = globals::config::espConfig.teammate.boxSecondary.Value.y * 255.f;
-			bb = globals::config::espConfig.teammate.boxSecondary.Value.z * 255.f;
-			aa = globals::config::espConfig.teammate.boxSecondary.Value.w * 255.f;
-		}
-		break;
-
-	case SELF:
-		if (globals::config::espConfig.self.boxPrimary.Value.w)
-		{
-			r = globals::config::espConfig.self.boxPrimary.Value.x * 255.f;
-			g = globals::config::espConfig.self.boxPrimary.Value.y * 255.f;
-			b = globals::config::espConfig.self.boxPrimary.Value.z * 255.f;
-			a = globals::config::espConfig.self.boxPrimary.Value.w * 255.f;
-		}
-
-		if (globals::config::espConfig.self.boxSecondary.Value.w)
-		{
-			rr = globals::config::espConfig.self.boxSecondary.Value.x * 255.f;
-			gg = globals::config::espConfig.self.boxSecondary.Value.y * 255.f;
-			bb = globals::config::espConfig.self.boxSecondary.Value.z * 255.f;
-			aa = globals::config::espConfig.self.boxSecondary.Value.w * 255.f;
-		}
-		break;
+		r = primary.Value.x * 255.f;
+		g = primary.Value.y * 255.f;
+		b = primary.Value.z * 255.f;
+		a = primary.Value.w * 255.f;
 	}
 
-	interfaces::m_surface->draw_set_color(r, g, b, a);
+	if (secondary)
+	{
+		rr = secondary.Value.x * 255.f;
+		gg = secondary.Value.y * 255.f;
+		bb = secondary.Value.z * 255.f;
+		aa = secondary.Value.w * 255.f;
+	}
 
-	interfaces::m_surface->draw_outlined_rect(left, top.y, right, bottom.y);
-
-	interfaces::m_surface->draw_set_color(rr, gg, bb, aa);
-
-	interfaces::m_surface->draw_outlined_rect(left - 1, top.y - 1, right + 1, bottom.y + 1);
-	interfaces::m_surface->draw_outlined_rect(left + 1, top.y + 1, right - 1, bottom.y - 1);
+	render_game::DrawPlayerBox(r, g, b, a, rr, gg, bb, aa, left, right, top.y, bottom.y);
 }
 
 void c_esp::RenderEsp(c_cs_player* player, int target, c_base_player* local, matrix3x4_t bones[128], vec3_t origin) {
@@ -158,37 +108,48 @@ void c_esp::RenderEsp(c_cs_player* player, int target, c_base_player* local, mat
 	worldTop.to_screen(top);
 	worldBottom.to_screen(bottom);
 
+	const float health = player->get_health();
+
 	switch (target)
 	{
 	case ENEMY:
-		if (!globals::config::espConfig.enemy.enabled || local->get_abs_origin().dist_to(origin) > float(globals::config::espConfig.enemy.distance * 100.f))
+		if (!globals::config::espConfig.enemy.enabled || local->get_abs_origin().dist_to(origin) > float(globals::config::espConfig.enemy.distance * 20.f))
 			return;
 
 		if (globals::config::espConfig.enemy.box)
-			RenderBox(target, top, bottom);
+			RenderBox(top, bottom, globals::config::espConfig.enemy.boxPrimary, globals::config::espConfig.enemy.boxSecondary);
+
+		if (globals::config::espConfig.enemy.healthText)
+			RenderHealth(health, top, bottom, globals::config::espConfig.enemy.healthTextPrimary);
 
 		if (globals::config::espConfig.enemy.healthBar)
-			RenderHealth(target, top, bottom, player);
+			RenderHealthBar(health, top, bottom, globals::config::espConfig.enemy.HealthPrimary);
 		break;
 	case TEAMMATE:
 		if (!globals::config::espConfig.teammate.enabled || local->get_abs_origin().dist_to(origin) > float(globals::config::espConfig.teammate.distance * 100.f))
 			return;
 
 		if (globals::config::espConfig.teammate.box)
-			RenderBox(target, top, bottom);
+			RenderBox(top, bottom, globals::config::espConfig.teammate.boxPrimary, globals::config::espConfig.teammate.boxSecondary);
+
+		if (globals::config::espConfig.teammate.healthText)
+			RenderHealth(health, top, bottom, globals::config::espConfig.teammate.healthTextPrimary);
 
 		if (globals::config::espConfig.teammate.healthBar)
-			RenderHealth(target, top, bottom, player);
+			RenderHealthBar(health, top, bottom, globals::config::espConfig.teammate.HealthPrimary);
 		break;
 	case SELF:
 		if (!globals::config::espConfig.self.enabled || local->get_abs_origin().dist_to(origin) > float(globals::config::espConfig.self.distance * 100.f))
 			return;
 
 		if (globals::config::espConfig.self.box)
-			RenderBox(target, top, bottom);
+			RenderBox(top, bottom, globals::config::espConfig.self.boxPrimary, globals::config::espConfig.self.boxSecondary);
+
+		if (globals::config::espConfig.self.healthText)
+			RenderHealth(health, top, bottom, globals::config::espConfig.self.healthTextPrimary);
 
 		if (globals::config::espConfig.self.healthBar)
-			RenderHealth(target, top, bottom, player);
+			RenderHealthBar(health, top, bottom, globals::config::espConfig.self.HealthPrimary);
 		break;
 	default:
 		break;

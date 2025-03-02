@@ -7,6 +7,7 @@ void __fastcall hooks::panel::paint_traverse::fn(void* ecx, void* edx, uint32_t 
 
 	original(ecx, id, force_repaint, allow_force);
 
+	/*
 	{
 		static auto draw_panel_id = 0u;
 
@@ -24,4 +25,5 @@ void __fastcall hooks::panel::paint_traverse::fn(void* ecx, void* edx, uint32_t 
 
 		original(ecx, id, force_repaint, allow_force);
 	}
+	*/
 }

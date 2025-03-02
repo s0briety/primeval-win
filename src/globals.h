@@ -51,11 +51,13 @@ namespace globals {
         bool enabled = false;
         float distance = 1000.f;
         bool box = false;
+        bool healthText = false;
         bool healthBar = false;
         bool weapon = false;
         bool skeleton = false;
         ImColor boxPrimary = ImColor(255, 255, 255, 255);
         ImColor boxSecondary = ImColor(0, 0, 0, 255); 
+        ImColor healthTextPrimary = ImColor(255, 255, 255, 255);
         ImColor HealthPrimary = ImColor(0, 255, 0, 255); 
         ImColor WeaponPrimary = ImColor(255, 255, 255, 255);
         ImColor SkeletonPrimary = ImColor(255, 255, 255, 255); 
@@ -86,6 +88,7 @@ namespace globals {
 
         extern ImVec4 backgroundColor;
         extern ImVec4 colorScene;
+        extern ImVec4 textColor;
         extern ImVec4 secondaryColor;
 
         extern KeyBind menuKey;
@@ -115,7 +118,7 @@ namespace globals {
         extern Hitbox multipointTable[8];
 
         // Autostop
-        extern Combostruct autostopTable[6];
+        extern Combostruct autostopTable[7];
 
         extern float multipointHead;
         extern float multipointBody;
@@ -130,9 +133,12 @@ namespace globals {
 
         // Anti-Aim
         extern bool antiAimEnabled;
-        extern int antiAimPitch;
-        extern int antiAimYaw;
-        extern int antiAimYawMode; // 0 - Static, 1 - Fake, 2 - Jitter, 3 - Spin, 4 - Random, 5 - Distort, 6 - Dynamic
+        extern float antiAimPitch;
+        extern float antiAimYaw;
+        extern float antiAimYawModifier;
+        extern int antiAimYawBase;
+        extern int antiAimYawMode;
+        extern int antiAimYawModifierMode; // 0 - Static, 1 - Fake, 2 - Jitter, 3 - Spin, 4 - Random, 5 - Distort, 6 - Dynamic
         extern int antiAimPitchMode; // 0 - Static, 1 - Down, 2 - Up, 3 - Random, 4 - Alternate, 5 - Fake Down, 6 - Fake Up
 
         // Visuals
@@ -151,6 +157,7 @@ namespace globals {
         extern float worldFov;
         extern bool nightMode;
         extern float nightScale;
+        extern bool worldModulation;
         extern ImColor skyColor;
 
         // Misc

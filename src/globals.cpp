@@ -22,9 +22,10 @@ namespace globals {
 
     namespace config
     {
-        ImVec4 backgroundColor = ImVec4(0.10f, 0.10f, 0.10f, 1.00f);
-        ImVec4 colorScene = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
-        ImVec4 secondaryColor = ImVec4(0.85f, 0.85f, 0.85f, 1.00f);
+        ImVec4 backgroundColor = ImColor(0, 0, 0, 255);
+        ImVec4 colorScene = ImColor(25, 25, 25, 255);
+        ImVec4 secondaryColor = ImColor(100, 125, 208, 255);
+        ImVec4 textColor = ImColor(255, 255, 255, 255);
 
         KeyBind menuKey = { VK_RSHIFT, 2, true };
         KeyBind QuickPeekKey = { 0, 0, false };
@@ -71,13 +72,14 @@ namespace globals {
         };
 
         // Autostop
-        Combostruct autostopTable[6] = {
+        Combostruct autostopTable[7] = {
             { "Early", false, 1 },
             { "Between Shots", false, 2 },
             { "Aggressive", false, 3 },
             { "Passive", false, 4 },
             { "Smart", false, 5 },
-            { "Jumpscout", false, 6 },
+            { "Crouch", false, 6 },
+            { "In Air", false, 7 },
         };
 
         float multipointHead = 0.0f;
@@ -93,10 +95,13 @@ namespace globals {
 
         // Anti-Aim
         bool antiAimEnabled = false;
-        int antiAimPitch = 0;
-        int antiAimYaw = 0;
-        int antiAimYawMode = 0; // 0 - Static, 1 - Fake, 2 - Jitter, 3 - Spin, 4 - Random, 5 - Distort, 6 - Dynamic
-        int antiAimPitchMode = 0; // 0 - Static, 1 - Down, 2 - Up, 3 - Random, 4 - Alternate, 5 - Fake Down, 6 - Fake Up
+        float antiAimPitch = 0;
+        float antiAimYaw = 0;
+        float antiAimYawModifier = 0;
+        int antiAimYawBase = 0;
+        int antiAimYawMode = 0;
+        int antiAimYawModifierMode = 0; // 0 - Off, 1 - Static, 2 - Fake, 3 - Jitter, 4 - Spin, 5 - Random, 6 - Distort, 7 - Dynamic
+        int antiAimPitchMode = 0; // 0 - Off, 1 - Static, 2 - Down, 3 - Up, 4 - Random, 5 - Alternate, 6 - Fake Down, 7 - Fake Up
 
         // Visuals
 
@@ -122,6 +127,7 @@ namespace globals {
         float worldFov = 90.0f;
         bool nightMode = false;
         float nightScale = 0.01f;
+        bool worldModulation = false;
         ImColor skyColor = ImColor(0, 0, 0);
 
         // Misc
